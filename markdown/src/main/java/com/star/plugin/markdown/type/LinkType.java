@@ -87,7 +87,12 @@ public class LinkType implements MarkDownType {
     @Override
     public SpannableStringBuilder replaceString(SpannableStringBuilder builder, Item item) {
         String text = item.getText();
-        if (!isImage(text)) {
+        if (isImage(text)) {
+            int end = item.getEnd();
+            if (end == builder.length() || (end < builder.length() && builder.charAt(end) != '\n')) {
+                builder.insert(end, "\n");
+            }
+        } else {
             int start = item.getStart() + text.indexOf("[");
             int end = item.getStart() + text.lastIndexOf("]");
             builder.delete(end, item.getEnd()).delete(item.getStart(), start + 1);

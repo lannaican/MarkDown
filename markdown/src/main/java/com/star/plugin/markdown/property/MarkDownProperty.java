@@ -66,8 +66,6 @@ public interface MarkDownProperty {
     //点击监听
     OnSpanClickListener getClickListener();
 
-    int getCodeBackgroundColor();
-
     int getIndexPadding();
 
 }

@@ -25,7 +25,6 @@ public class LineSpan extends ReplacementSpan implements MarkDownSpan {
     public int getSize(@NonNull Paint paint, CharSequence text, int start, int end,
                        @Nullable Paint.FontMetricsInt fm) {
         return -1;
-
     }
 
     @Override

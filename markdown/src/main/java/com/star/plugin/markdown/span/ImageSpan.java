@@ -41,7 +41,7 @@ public abstract class ImageSpan extends DynamicDrawableSpan implements Clickable
     public int getSize(@NonNull Paint paint, CharSequence text, int start, int end, @Nullable Paint.FontMetricsInt fm) {
         int height = MarkDown.getProperty().getImageHeight();
         if (fm != null) {
-            fm.ascent = -(int)((float)height / 1.5 + desSize * 2);
+            fm.ascent = -(int)((float)height / MarkDown.getProperty().getLineSpacingMultiplier() + desSize * 2);
             fm.descent = 0;
             fm.top = fm.ascent;
             fm.bottom = 0;
@@ -59,34 +59,35 @@ public abstract class ImageSpan extends DynamicDrawableSpan implements Clickable
                      int y, int bottom, @NonNull Paint paint) {
         Drawable drawable = getDrawable();
         Rect rect = drawable.getBounds();
-        int originWidth = rect.width();
-        int originHeight = rect.height();
-        int maxHeight = MarkDown.getProperty().getImageHeight();
-        int maxWidth = canvas.getWidth();
-        float offsetX = 0, offsetY = 0;
+        float originWidth = rect.width();
+        float originHeight = rect.height();
+        float maxHeight = MarkDown.getProperty().getImageHeight();
+        float maxWidth = (int)(canvas.getWidth() - (x * 2));
+        float offsetX, offsetY;
         float width = originWidth;
         float height = originHeight;
         //先限制高度在最大高度以内，在限制宽度
-        if (originHeight > maxHeight) {
-            float scale = (float)maxHeight / (float)originHeight;
-            height = maxHeight;
-            width = width * scale;
+        boolean horizontalLimit = originWidth / maxWidth > originHeight / maxHeight;
+        if (horizontalLimit) {
+            if (width > maxWidth) {
+                float scale = maxWidth / width;
+                width = maxWidth;
+                height = height * scale;
+            }
         } else {
-            offsetY = (maxHeight - originHeight) / 2;
+            if (originHeight > maxHeight) {
+                float scale = maxHeight / originHeight;
+                height = maxHeight;
+                width = width * scale;
+            }
         }
-        if (width > maxWidth) {
-            float scale = (float)maxWidth / width;
-            width = maxWidth;
-            height = height * scale;
-            offsetY = (maxHeight - height) / 2;
-        } else {
-            offsetX = (maxWidth - originWidth) / 2;
-        }
+        offsetX = (maxWidth - width) / 2;
+        offsetY = (maxHeight - height) / 2;
         drawable.setBounds(0, 0, (int)width, (int)height);
 
         canvas.save();
-        int transY = bottom - drawable.getBounds().bottom - (int)offsetY - desSize * 3;
-        canvas.translate(x + offsetX, transY);
+        //int transY = bottom - drawable.getBounds().bottom - (int)offsetY - desSize * 3;
+        canvas.translate(x + offsetX, top + offsetY);
         drawable.draw(canvas);
         //绘制说明文字
         int textColor = paint.getColor();

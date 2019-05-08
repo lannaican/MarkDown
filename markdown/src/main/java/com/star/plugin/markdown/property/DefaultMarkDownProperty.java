@@ -2,6 +2,8 @@ package com.star.plugin.markdown.property;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 import com.star.plugin.markdown.R;
 import com.star.plugin.markdown.listener.OnSpanClickListener;
@@ -120,11 +122,6 @@ public class DefaultMarkDownProperty implements MarkDownProperty {
     @Override
     public OnSpanClickListener getClickListener() {
         return null;
-    }
-
-    @Override
-    public int getCodeBackgroundColor() {
-        return 0xFFF3F3F3;
     }
 
     @Override
