@@ -5,21 +5,19 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
+import com.star.plugin.markdown.listener.OnMarkDownListener;
 import com.star.plugin.markdown.model.Item;
 import com.star.plugin.markdown.property.MarkDownProperty;
 import com.star.plugin.markdown.type.MarkDownType;
-import com.star.plugin.markdown.type.provider.DefaultMarkDownTypeProvider;
 import com.star.plugin.markdown.type.provider.MarkDownTypeProvider;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -43,10 +41,13 @@ public class MarkDown {
     
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("CheckResult")
-    public static void set(TextView textView, String text) {
+    public static void set(TextView textView, String text, OnMarkDownListener listener) {
         Observable.fromCallable(() -> getDisplaySpan(text)).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(textView::setText);
+                .subscribe(builder -> {
+                    textView.setText(builder, TextView.BufferType.SPANNABLE);
+                    listener.onFinish(text);
+                });
     }
 
     /**
