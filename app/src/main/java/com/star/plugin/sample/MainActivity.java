@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.star.plugin.markdown.MarkDown;
 import com.star.plugin.markdown.MarkDownEditText;
 import com.star.plugin.markdown.MarkDownTextView;
+import com.star.plugin.markdown.type.MentionType;
 
 import java.util.concurrent.Callable;
 
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("CheckResult")
             @Override
             public void afterTextChanged(Editable s) {
-                textView.setMarkDown(s.toString());
+                textView.setMarkDown(s.toString(), MentionType.class);
             }
         });
     }

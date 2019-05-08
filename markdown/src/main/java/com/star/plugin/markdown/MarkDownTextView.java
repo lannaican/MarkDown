@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.star.plugin.markdown.listener.OnMarkDownListener;
 import com.star.plugin.markdown.span.base.ClickableSpan;
+import com.star.plugin.markdown.type.MentionType;
 
 import androidx.appcompat.widget.AppCompatTextView;
 
@@ -36,12 +37,12 @@ public class MarkDownTextView extends AppCompatTextView {
         setMovementMethod(new LinkTouchMovementMethod());
     }
 
-    public void setMarkDown(String text) {
-        MarkDown.set(this, text, null);
+    public void setMarkDown(String text, Class...useTypes) {
+        MarkDown.set(this, text, null, useTypes);
     }
 
-    public void setMarkDown(String text, OnMarkDownListener listener) {
-        MarkDown.set(this, text, listener);
+    public void setMarkDown(String text, OnMarkDownListener listener, Class...useTypes) {
+        MarkDown.set(this, text, listener, useTypes);
     }
 
     @Override

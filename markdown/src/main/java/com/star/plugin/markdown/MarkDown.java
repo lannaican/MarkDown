@@ -41,8 +41,8 @@ public class MarkDown {
     
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("CheckResult")
-    public static void set(TextView textView, String text, OnMarkDownListener listener) {
-        Observable.fromCallable(() -> getDisplaySpan(text)).subscribeOn(Schedulers.io())
+    public static void set(TextView textView, String text, OnMarkDownListener listener, Class...spans) {
+        Observable.fromCallable(() -> getDisplaySpan(text, spans)).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(builder -> {
                     textView.setText(builder, TextView.BufferType.SPANNABLE);
@@ -69,10 +69,13 @@ public class MarkDown {
     /**
      * 获取展示Span,非UI线程
      */
-    public static SpannableStringBuilder getDisplaySpan(String text) {
+    public static SpannableStringBuilder getDisplaySpan(String text, Class...useTypes) {
         List<MarkDownType> types = provider.getTypes();
         SpannableStringBuilder builder = new SpannableStringBuilder(text);
         for (MarkDownType type : types) {
+            if (!validType(type, useTypes)) {
+                continue;
+            }
             List<Item> items = matchType(type, text);
             for (Item item : items) {
                 type.setSpan(builder, item, false);
@@ -80,6 +83,9 @@ public class MarkDown {
         }
         int diffCount;
         for (MarkDownType type : types) {
+            if (!validType(type, useTypes)) {
+                continue;
+            }
             List<Item> items = matchType(type, builder);
             diffCount = text.length() - builder.length();
             int diffLength = 0;
@@ -103,5 +109,17 @@ public class MarkDown {
             items.add(new Item(type, matcher.start(), matcher.end(), matcher.group()));
         }
         return items;
+    }
+
+    private static boolean validType(MarkDownType type, Class...useTypes) {
+        if (useTypes != null) {
+            for (Class cls : useTypes) {
+                if (type.getClass() == cls) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return true;
     }
 }
