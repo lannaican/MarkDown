@@ -41,8 +41,8 @@ public class MarkDown {
     
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("CheckResult")
-    public static void set(TextView textView, String text, OnMarkDownListener listener, Class...spans) {
-        Observable.fromCallable(() -> getDisplaySpan(text, spans)).subscribeOn(Schedulers.io())
+    public static void set(TextView textView, String text, OnMarkDownListener listener, Class...useTypes) {
+        Observable.fromCallable(() -> getDisplaySpan(text, useTypes)).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(builder -> {
                     textView.setText(builder, TextView.BufferType.SPANNABLE);
@@ -112,14 +112,14 @@ public class MarkDown {
     }
 
     private static boolean validType(MarkDownType type, Class...useTypes) {
-        if (useTypes != null) {
-            for (Class cls : useTypes) {
-                if (type.getClass() == cls) {
-                    return true;
-                }
-            }
-            return false;
+        if (useTypes == null || useTypes.length == 0) {
+            return true;
         }
-        return true;
+        for (Class cls : useTypes) {
+            if (type.getClass() == cls) {
+                return true;
+            }
+        }
+        return false;
     }
 }
