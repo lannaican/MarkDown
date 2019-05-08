@@ -29,7 +29,7 @@ public class LinkType implements MarkDownType {
 
     @Override
     public String getRegex() {
-        return "!{0,1}\\[.*\\]\\(.*\\)";
+        return "!{0,1}\\[.*?\\]\\(.*?\\)";
     }
 
     @Override

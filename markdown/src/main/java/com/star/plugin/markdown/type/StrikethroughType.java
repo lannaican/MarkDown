@@ -15,7 +15,7 @@ import com.star.plugin.markdown.model.Item;
 public class StrikethroughType implements MarkDownType {
     @Override
     public String getRegex() {
-        return "~~.{1,}~~";
+        return "~~.{1,}?~~";
     }
 
     @Override

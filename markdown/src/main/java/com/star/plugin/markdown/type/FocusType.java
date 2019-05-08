@@ -16,7 +16,7 @@ import com.star.plugin.markdown.model.Item;
 public class FocusType implements MarkDownType {
     @Override
     public String getRegex() {
-        return "#{2}.{1,}#{2}";
+        return "#{2}.{1,}?#{2}";
     }
 
     @Override
