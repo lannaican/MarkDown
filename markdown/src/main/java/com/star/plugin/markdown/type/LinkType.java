@@ -124,7 +124,7 @@ public class LinkType implements MarkDownType {
 
     private boolean isImage(String text) {
         int index = text.indexOf("!");
-        return index != -1 || index < text.indexOf("[") ;
+        return index != -1 && index < text.indexOf("[") ;
     }
 
     private void addImage(Spannable spannable, String url) {
