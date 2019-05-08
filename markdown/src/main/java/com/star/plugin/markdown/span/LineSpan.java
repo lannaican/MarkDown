@@ -30,10 +30,10 @@ public class LineSpan extends ReplacementSpan implements MarkDownSpan {
     @Override
     public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x, int top,
                      int y, int bottom, @NonNull Paint paint) {
-        int center = (top + bottom - (bottom - y) / 2) / 2;
+        float center = (top + bottom - (bottom - y) / 2) / 2;
         int color = paint.getColor();
         paint.setColor(MarkDown.getProperty().getLineColor());
-        int height = MarkDown.getProperty().getLineHeight();
+        float height = MarkDown.getProperty().getLineHeight();
         canvas.drawRect(0, center - height / 2, canvas.getWidth(), center + height / 2, paint);
         paint.setColor(color);
     }

@@ -70,7 +70,7 @@ public class DefaultMarkDownProperty implements MarkDownProperty {
     }
 
     @Override
-    public int getLineHeight() {
+    public float getLineHeight() {
         return getSize(R.dimen.md_line_height);
     }
 
