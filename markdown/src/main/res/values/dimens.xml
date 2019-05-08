@@ -7,7 +7,7 @@
     <dimen name="md_h5_size">12dp</dimen>
     <dimen name="md_h6_size">10dp</dimen>
     <dimen name="md_quote_width">3dp</dimen>
-    <dimen name="md_quote_gap_width">10dp</dimen>
+    <dimen name="md_quote_gap_width">12dp</dimen>
     <dimen name="md_line_height">1dp</dimen>
     <dimen name="md_link_drawable_size">16dp</dimen>
     <dimen name="md_link_edit_gap_width">10dp</dimen>

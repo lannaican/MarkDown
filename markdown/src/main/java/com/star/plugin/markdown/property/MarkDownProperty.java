@@ -36,7 +36,7 @@ public interface MarkDownProperty {
     int getQuoteColor();
 
     //分割线高度
-    int getLineHeight();
+    float getLineHeight();
 
     //分割线颜色
     int getLineColor();
