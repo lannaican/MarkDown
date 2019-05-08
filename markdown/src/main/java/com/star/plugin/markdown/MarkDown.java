@@ -46,7 +46,9 @@ public class MarkDown {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(builder -> {
                     textView.setText(builder, TextView.BufferType.SPANNABLE);
-                    listener.onFinish(text);
+                    if (listener != null) {
+                        listener.onFinish(text);
+                    }
                 });
     }
 

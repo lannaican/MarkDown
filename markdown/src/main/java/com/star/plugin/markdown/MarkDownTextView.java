@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
+import com.star.plugin.markdown.listener.OnMarkDownListener;
 import com.star.plugin.markdown.span.base.ClickableSpan;
 
 import androidx.appcompat.widget.AppCompatTextView;
@@ -36,7 +37,11 @@ public class MarkDownTextView extends AppCompatTextView {
     }
 
     public void setMarkDown(String text) {
-        MarkDown.set(this, text);
+        MarkDown.set(this, text, null);
+    }
+
+    public void setMarkDown(String text, OnMarkDownListener listener) {
+        MarkDown.set(this, text, listener);
     }
 
     @Override
