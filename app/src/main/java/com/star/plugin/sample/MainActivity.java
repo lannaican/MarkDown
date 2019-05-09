@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("CheckResult")
             @Override
             public void afterTextChanged(Editable s) {
-                textView.setMarkDown(s.toString(), MentionType.class);
+                textView.setMarkDown(s.toString());
             }
         });
     }

@@ -6,7 +6,10 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.text.style.DynamicDrawableSpan;
+import android.view.View;
+import android.widget.TextView;
 
 import com.star.plugin.markdown.MarkDown;
 import com.star.plugin.markdown.span.base.ClickableSpan;
@@ -27,21 +30,41 @@ public abstract class ImageSpan extends DynamicDrawableSpan implements Clickable
     private String des;
     private int desSize;
 
-    public ImageSpan(@Nullable Bitmap bitmap, String des) {
+    private float width;
+    private float height;
+    private float offsetX;
+    private float paddingVertical;
+
+
+    public ImageSpan(View view, @Nullable Bitmap bitmap, String des) {
         super(ALIGN_BOTTOM);
         this.des = des;
         this.desSize = MarkDown.getProperty().getImageDesSize();
+        this.paddingVertical = desSize;
+        if (des == null || des.length() == 0) {
+            this.desSize = 0;
+        }
         this.drawable = new BitmapDrawable(bitmap);
         if (bitmap != null) {
-            drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
+            width = bitmap.getWidth();
+            height = bitmap.getHeight();
+            float maxWidth = view.getMeasuredWidth()
+                    - view.getPaddingLeft()
+                    - view.getPaddingRight();
+            if (width > maxWidth) {
+                float scale = maxWidth / width;
+                height = height * scale;
+                width = maxWidth;
+            }
+            offsetX = (maxWidth - width) / 2;
+            drawable.setBounds(0, 0, (int)width, (int)height);
         }
     }
 
     @Override
     public int getSize(@NonNull Paint paint, CharSequence text, int start, int end, @Nullable Paint.FontMetricsInt fm) {
-        int height = MarkDown.getProperty().getImageHeight();
         if (fm != null) {
-            fm.ascent = -(int)((float)height / MarkDown.getProperty().getLineSpacingMultiplier() + desSize * 2);
+            fm.ascent = -(int)(height / MarkDown.getProperty().getLineSpacingMultiplier() + desSize * 2 + paddingVertical * 2);
             fm.descent = 0;
             fm.top = fm.ascent;
             fm.bottom = 0;
@@ -58,48 +81,22 @@ public abstract class ImageSpan extends DynamicDrawableSpan implements Clickable
     public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x, int top,
                      int y, int bottom, @NonNull Paint paint) {
         Drawable drawable = getDrawable();
-        Rect rect = drawable.getBounds();
-        float originWidth = rect.width();
-        float originHeight = rect.height();
-        float maxHeight = MarkDown.getProperty().getImageHeight();
-        float maxWidth = (int)(canvas.getWidth() - (x * 2));
-        float offsetX, offsetY;
-        float width = originWidth;
-        float height = originHeight;
-        //先限制高度在最大高度以内，在限制宽度
-        boolean horizontalLimit = originWidth / maxWidth > originHeight / maxHeight;
-        if (horizontalLimit) {
-            if (width > maxWidth) {
-                float scale = maxWidth / width;
-                width = maxWidth;
-                height = height * scale;
-            }
-        } else {
-            if (originHeight > maxHeight) {
-                float scale = maxHeight / originHeight;
-                height = maxHeight;
-                width = width * scale;
-            }
-        }
-        offsetX = (maxWidth - width) / 2;
-        offsetY = (maxHeight - height) / 2;
-        drawable.setBounds(0, 0, (int)width, (int)height);
-
         canvas.save();
-        //int transY = bottom - drawable.getBounds().bottom - (int)offsetY - desSize * 3;
-        canvas.translate(x + offsetX, top + offsetY);
+        canvas.translate(x + offsetX, top + paddingVertical);
         drawable.draw(canvas);
         //绘制说明文字
-        int textColor = paint.getColor();
-        float textSize = paint.getTextSize();
-        Paint.Align align = paint.getTextAlign();
-        paint.setColor(MarkDown.getProperty().getImageDesColor());
-        paint.setTextSize(desSize);
-        paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText(des, width / 2, height + desSize * 2, paint);
-        paint.setTextAlign(align);
-        paint.setTextSize(textSize);
-        paint.setColor(textColor);
+        if (!TextUtils.isEmpty(des)) {
+            int textColor = paint.getColor();
+            float textSize = paint.getTextSize();
+            Paint.Align align = paint.getTextAlign();
+            paint.setColor(MarkDown.getProperty().getImageDesColor());
+            paint.setTextSize(desSize);
+            paint.setTextAlign(Paint.Align.CENTER);
+            canvas.drawText(des, width / 2, height + paddingVertical + desSize, paint);
+            paint.setTextAlign(align);
+            paint.setTextSize(textSize);
+            paint.setColor(textColor);
+        }
         canvas.restore();
     }
 

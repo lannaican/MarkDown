@@ -3,6 +3,7 @@ package com.star.plugin.markdown.type;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.view.View;
+import android.widget.TextView;
 
 import com.star.plugin.markdown.MarkDown;
 import com.star.plugin.markdown.MarkDownHelper;
@@ -23,7 +24,7 @@ public class MentionType implements MarkDownType {
     }
 
     @Override
-    public void setSpan(Spannable spannable, Item item, boolean edit) {
+    public void setSpan(TextView textView, Spannable spannable, Item item, boolean edit) {
         String name = item.getText().substring(1);
         MarkDownHelper.setSpan(spannable, new MentionSpan() {
             @Override

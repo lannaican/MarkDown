@@ -2,6 +2,7 @@ package com.star.plugin.markdown.type;
 
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.widget.TextView;
 
 import com.star.plugin.markdown.MarkDown;
 import com.star.plugin.markdown.MarkDownHelper;
@@ -20,7 +21,7 @@ public class FocusType implements MarkDownType {
     }
 
     @Override
-    public void setSpan(Spannable spannable, Item item, boolean edit) {
+    public void setSpan(TextView textView, Spannable spannable, Item item, boolean edit) {
         MarkDownHelper.setSpan(spannable, new FocusSpan(MarkDown.getProperty().getColor()), item);
     }
 

@@ -42,7 +42,7 @@ public class MarkDown {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("CheckResult")
     public static void set(TextView textView, String text, OnMarkDownListener listener, Class...useTypes) {
-        Observable.fromCallable(() -> getDisplaySpan(text, useTypes)).subscribeOn(Schedulers.io())
+        Observable.fromCallable(() -> getDisplaySpan(textView, text, useTypes)).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(builder -> {
                     textView.setText(builder, TextView.BufferType.SPANNABLE);
@@ -55,13 +55,13 @@ public class MarkDown {
     /**
      * 编辑模式下设置Span
      */
-    public static void setEditing(Spannable spannable) {
+    public static void setEditing(TextView textView, Spannable spannable) {
         MarkDownHelper.clearSpan(spannable);
         List<MarkDownType> types = provider.getTypes();
         for (MarkDownType type : types) {
             List<Item> items = matchType(type, spannable);
             for (Item item : items) {
-                type.setSpan(spannable, item, true);
+                type.setSpan(textView, spannable, item, true);
             }
         }
     }
@@ -69,7 +69,7 @@ public class MarkDown {
     /**
      * 获取展示Span,非UI线程
      */
-    public static SpannableStringBuilder getDisplaySpan(String text, Class...useTypes) {
+    public static SpannableStringBuilder getDisplaySpan(TextView textView, String text, Class...useTypes) {
         List<MarkDownType> types = provider.getTypes();
         SpannableStringBuilder builder = new SpannableStringBuilder(text);
         for (MarkDownType type : types) {
@@ -78,7 +78,7 @@ public class MarkDown {
             }
             List<Item> items = matchType(type, text);
             for (Item item : items) {
-                type.setSpan(builder, item, false);
+                type.setSpan(textView, builder, item, false);
             }
         }
         int diffCount;

@@ -56,9 +56,6 @@ public interface MarkDownProperty {
     //浏览模式图片加载器
     ImageLoader getImageLoader();
 
-    //浏览模式图片高度
-    int getImageHeight();
-
     int getImageDesSize();
 
     int getImageDesColor();

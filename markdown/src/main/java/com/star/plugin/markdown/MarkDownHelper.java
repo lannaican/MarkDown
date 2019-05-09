@@ -1,7 +1,10 @@
 package com.star.plugin.markdown;
 
+import android.content.Context;
 import android.text.Spannable;
 import android.text.Spanned;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 import com.star.plugin.markdown.model.Item;
 import com.star.plugin.markdown.span.base.MarkDownSpan;

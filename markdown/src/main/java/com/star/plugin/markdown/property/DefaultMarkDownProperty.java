@@ -2,8 +2,6 @@ package com.star.plugin.markdown.property;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.DisplayMetrics;
-import android.view.WindowManager;
 
 import com.star.plugin.markdown.R;
 import com.star.plugin.markdown.listener.OnSpanClickListener;
@@ -102,11 +100,6 @@ public class DefaultMarkDownProperty implements MarkDownProperty {
     @Override
     public ImageLoader getImageLoader() {
         return null;
-    }
-
-    @Override
-    public int getImageHeight() {
-        return getSize(R.dimen.md_image_height);
     }
 
     @Override

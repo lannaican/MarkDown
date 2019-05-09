@@ -44,7 +44,7 @@ public class MarkDownEditText extends AppCompatEditText {
 
             @Override
             public void afterTextChanged(Editable s) {
-                MarkDown.setEditing(s);
+                MarkDown.setEditing(MarkDownEditText.this, s);
             }
         });
     }

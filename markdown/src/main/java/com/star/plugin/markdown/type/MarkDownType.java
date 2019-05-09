@@ -2,6 +2,7 @@ package com.star.plugin.markdown.type;
 
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.widget.TextView;
 
 import com.star.plugin.markdown.model.Item;
 
@@ -20,7 +21,7 @@ public interface MarkDownType {
     /**
      * 设置Span
      */
-    void setSpan(Spannable spannable, Item item, boolean edit);
+    void setSpan(TextView textView, Spannable spannable, Item item, boolean edit);
 
     /**
      * 删除MarkDown格式
