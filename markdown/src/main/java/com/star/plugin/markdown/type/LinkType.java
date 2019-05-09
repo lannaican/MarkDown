@@ -45,7 +45,7 @@ public class LinkType implements MarkDownType {
                 MarkDownHelper.setSpan(spannable, span, item);
             } else {
                 String des = getDes(item.getText());
-                String url = getUrl(item.getText());
+                final String url = getUrl(item.getText());
                 ImageLoader loader = MarkDown.getProperty().getImageLoader();
                 Bitmap bitmap = null;
                 if (loader != null) {
@@ -71,7 +71,7 @@ public class LinkType implements MarkDownType {
                         MarkDown.getProperty().getLinkEditGapWidth());
                 MarkDownHelper.setSpan(spannable, span, item);
             } else {
-                String url = getUrl(item.getText());
+                final String url = getUrl(item.getText());
                 MarkDownHelper.setSpan(spannable, new UrlSpan() {
                     @Override
                     public void onSpanClick(View view) {

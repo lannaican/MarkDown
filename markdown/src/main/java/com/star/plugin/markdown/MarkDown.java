@@ -13,11 +13,13 @@ import com.star.plugin.markdown.type.provider.MarkDownTypeProvider;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -41,13 +43,21 @@ public class MarkDown {
     
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("CheckResult")
-    public static void set(TextView textView, String text, OnMarkDownListener listener, Class...useTypes) {
-        Observable.fromCallable(() -> getDisplaySpan(textView, text, useTypes)).subscribeOn(Schedulers.io())
+    public static void set(final TextView textView, final String text, final OnMarkDownListener listener, final Class...useTypes) {
+        Observable.fromCallable(new Callable<SpannableStringBuilder>() {
+            @Override
+            public SpannableStringBuilder call() {
+                return getDisplaySpan(textView, text, useTypes);
+            }
+        }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(builder -> {
-                    textView.setText(builder, TextView.BufferType.SPANNABLE);
-                    if (listener != null) {
-                        listener.onFinish(text);
+                .subscribe(new Consumer<SpannableStringBuilder>() {
+                    @Override
+                    public void accept(SpannableStringBuilder builder) {
+                        textView.setText(builder, TextView.BufferType.SPANNABLE);
+                        if (listener != null) {
+                            listener.onFinish(text);
+                        }
                     }
                 });
     }

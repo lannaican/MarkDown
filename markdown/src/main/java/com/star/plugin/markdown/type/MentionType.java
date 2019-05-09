@@ -24,8 +24,8 @@ public class MentionType implements MarkDownType {
     }
 
     @Override
-    public void setSpan(TextView textView, Spannable spannable, Item item, boolean edit) {
-        String name = item.getText().substring(1);
+    public void setSpan(TextView textView, Spannable spannable, Item item, final boolean edit) {
+        final String name = item.getText().substring(1);
         MarkDownHelper.setSpan(spannable, new MentionSpan() {
             @Override
             public void onSpanClick(View view) {

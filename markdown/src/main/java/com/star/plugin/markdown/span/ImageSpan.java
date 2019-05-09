@@ -85,7 +85,7 @@ public abstract class ImageSpan extends DynamicDrawableSpan implements Clickable
         canvas.translate(x + offsetX, top + paddingVertical);
         drawable.draw(canvas);
         //绘制说明文字
-        if (!TextUtils.isEmpty(des)) {
+        if (!TextUtils.isEmpty(des) && width > 0) {
             int textColor = paint.getColor();
             float textSize = paint.getTextSize();
             Paint.Align align = paint.getTextAlign();
