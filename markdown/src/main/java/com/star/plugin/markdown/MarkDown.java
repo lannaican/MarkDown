@@ -65,10 +65,13 @@ public class MarkDown {
     /**
      * 编辑模式下设置Span
      */
-    public static void setEditing(TextView textView, Spannable spannable) {
+    public static void setEditing(TextView textView, Spannable spannable, Class...useTypes) {
         MarkDownHelper.clearSpan(spannable);
         List<MarkDownType> types = provider.getTypes();
         for (MarkDownType type : types) {
+            if (!validType(type, useTypes)) {
+                continue;
+            }
             List<Item> items = matchType(type, spannable);
             for (Item item : items) {
                 type.setSpan(textView, spannable, item, true);

@@ -18,18 +18,29 @@ public class IndexType implements MarkDownType {
 
     @Override
     public String getRegex() {
-        return "(([1-9]\\.)|\\+ |\\* |\\- ).*";
+        return "(^|\\n)(([1-9]\\. )|\\+ |\\* |\\- ).*";
     }
 
     @Override
     public void setSpan(TextView textView, Spannable spannable, Item item, boolean edit) {
+        lineHandle(item);
         int type = getType(item.getText());
         MarkDownHelper.setSpan(spannable, new IndexSpan(type, !edit), item);
     }
 
     @Override
     public SpannableStringBuilder replaceString(SpannableStringBuilder builder, Item item) {
+        lineHandle(item);
         return builder.delete(item.getStart(), item.getStart() + 2);
+    }
+
+    //处理首字符为换行
+    private void lineHandle(Item item) {
+        boolean line = item.getText().startsWith("\n");
+        if (line) {
+            item.setText(item.getText().substring(1));
+            item.setStart(item.getStart() + 1);
+        }
     }
 
     private int getType(String text){
