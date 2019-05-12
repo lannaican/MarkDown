@@ -33,7 +33,9 @@ public class MarkDownTextView extends AppCompatTextView {
 
     public MarkDownTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setLineSpacing(0, MarkDown.getProperty().getLineSpacingMultiplier());
+        if (getLineSpacingMultiplier() == 1) {
+            setLineSpacing(0, MarkDown.getProperty().getLineSpacingMultiplier());
+        }
         setMovementMethod(new LinkTouchMovementMethod());
     }
 
