@@ -128,7 +128,7 @@ public class MarkDown {
     }
 
 
-    private static List<Item> matchType(MarkDownType type, CharSequence text) {
+    public static List<Item> matchType(MarkDownType type, CharSequence text) {
         List<Item> items = new LinkedList<>();
         Pattern pattern = Pattern.compile(type.getRegex());
         Matcher matcher = pattern.matcher(text);
