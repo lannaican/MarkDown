@@ -11,6 +11,7 @@ import com.star.plugin.markdown.property.MarkDownProperty;
 import com.star.plugin.markdown.type.MarkDownType;
 import com.star.plugin.markdown.type.provider.MarkDownTypeProvider;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -113,6 +114,19 @@ public class MarkDown {
         }
         return builder;
     }
+
+    /**
+     * 获取满足Type的字符串
+     */
+    public static ArrayList<String> getTypeStringList(String text, MarkDownType type) {
+        ArrayList<String> strings = new ArrayList<>();
+        List<Item> items = matchType(type, text);
+        for (Item item : items) {
+            strings.add(item.getText());
+        }
+        return strings;
+    }
+
 
     private static List<Item> matchType(MarkDownType type, CharSequence text) {
         List<Item> items = new LinkedList<>();

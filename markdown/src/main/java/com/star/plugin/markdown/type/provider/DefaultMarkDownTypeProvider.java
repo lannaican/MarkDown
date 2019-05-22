@@ -1,7 +1,6 @@
 package com.star.plugin.markdown.type.provider;
 
 import com.star.plugin.markdown.type.CharacterType;
-import com.star.plugin.markdown.type.FocusType;
 import com.star.plugin.markdown.type.HType;
 import com.star.plugin.markdown.type.LinkType;
 import com.star.plugin.markdown.type.IndexType;
@@ -25,7 +24,6 @@ public class DefaultMarkDownTypeProvider implements MarkDownTypeProvider {
 
     public DefaultMarkDownTypeProvider() {
         types = new ArrayList<>();
-        types.add(new FocusType());
         types.add(new HType());
         types.add(new CharacterType());
         types.add(new QuoteType());
