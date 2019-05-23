@@ -1,7 +1,5 @@
 package com.star.plugin.markdown.model;
 
-import com.star.plugin.markdown.type.MarkDownType;
-
 /**
  * Detail：
  * Author：Stars
@@ -9,24 +7,14 @@ import com.star.plugin.markdown.type.MarkDownType;
  */
 public class Item {
 
-    private MarkDownType type;
     private String text;
 
     private int start, end;
 
-    public Item(MarkDownType type, int start, int end, String text) {
-        this.type = type;
+    public Item(int start, int end, String text) {
         this.start = start;
         this.end = end;
         this.text = text;
-    }
-
-    public MarkDownType getType() {
-        return type;
-    }
-
-    public void setType(MarkDownType type) {
-        this.type = type;
     }
 
     public String getText() {

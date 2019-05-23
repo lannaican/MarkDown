@@ -17,7 +17,7 @@ public class LineType implements MarkDownType {
 
     @Override
     public String getRegex() {
-        return "-{3,}\\n{1}";
+        return "?:(^|\\n)-{3,}\\n{1}";
     }
 
     @Override

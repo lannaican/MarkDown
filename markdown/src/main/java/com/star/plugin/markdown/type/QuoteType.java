@@ -17,7 +17,7 @@ public class QuoteType implements MarkDownType {
 
     @Override
     public String getRegex() {
-        return "> .{1,}\\n?";
+        return "?:(^|\\n)> .{1,}\\n?";
     }
 
     @Override

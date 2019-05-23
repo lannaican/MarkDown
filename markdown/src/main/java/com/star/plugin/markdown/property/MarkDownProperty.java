@@ -65,4 +65,6 @@ public interface MarkDownProperty {
 
     int getIndexPadding();
 
+    String[] getAsyncLoadRegex();
+
 }

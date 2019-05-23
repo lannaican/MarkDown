@@ -122,6 +122,11 @@ public class DefaultMarkDownProperty implements MarkDownProperty {
         return getSize(R.dimen.md_index_padding);
     }
 
+    @Override
+    public String[] getAsyncLoadRegex() {
+        return new String[]{"!\\[.*?\\]\\(.*?\\)"};
+    }
+
     private int getSize(int id) {
         return context.getResources().getDimensionPixelSize(id);
     }

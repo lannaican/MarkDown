@@ -45,22 +45,36 @@ public class MarkDown {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("CheckResult")
     public static void set(final TextView textView, final String text, final OnMarkDownListener listener, final Class...useTypes) {
-        Observable.fromCallable(new Callable<SpannableStringBuilder>() {
-            @Override
-            public SpannableStringBuilder call() {
-                return getDisplaySpan(textView, text, useTypes);
+        String[] regex = property.getAsyncLoadRegex();
+        boolean async = false;
+        if (regex != null) {
+            for (String reg : regex) {
+                if (findRegex(reg, text)) {
+                    async = true;
+                    break;
+                }
             }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<SpannableStringBuilder>() {
-                    @Override
-                    public void accept(SpannableStringBuilder builder) {
-                        textView.setText(builder, TextView.BufferType.SPANNABLE);
-                        if (listener != null) {
-                            listener.onFinish(text);
+        }
+        if (async) {
+            Observable.fromCallable(new Callable<SpannableStringBuilder>() {
+                @Override
+                public SpannableStringBuilder call() {
+                    return getDisplaySpan(textView, text, useTypes);
+                }})
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<SpannableStringBuilder>() {
+                        @Override
+                        public void accept(SpannableStringBuilder builder) {
+                            textView.setText(builder, TextView.BufferType.SPANNABLE);
+                            if (listener != null) {
+                                listener.onFinish(text);
+                            }
                         }
-                    }
-                });
+                    });
+        } else {
+            textView.setText(getDisplaySpan(textView, text, useTypes), TextView.BufferType.SPANNABLE);
+        }
     }
 
     /**
@@ -73,7 +87,7 @@ public class MarkDown {
             if (!validType(type, useTypes)) {
                 continue;
             }
-            List<Item> items = matchType(type, spannable);
+            List<Item> items = matchRegex(type.getRegex(), spannable);
             for (Item item : items) {
                 type.setSpan(textView, spannable, item, true);
             }
@@ -90,7 +104,7 @@ public class MarkDown {
             if (!validType(type, useTypes)) {
                 continue;
             }
-            List<Item> items = matchType(type, text);
+            List<Item> items = matchRegex(type.getRegex(), text);
             for (Item item : items) {
                 type.setSpan(textView, builder, item, false);
             }
@@ -100,7 +114,7 @@ public class MarkDown {
             if (!validType(type, useTypes)) {
                 continue;
             }
-            List<Item> items = matchType(type, builder);
+            List<Item> items = matchRegex(type.getRegex(), builder);
             diffCount = text.length() - builder.length();
             int diffLength = 0;
             for (Item item : items) {
@@ -120,20 +134,29 @@ public class MarkDown {
      */
     public static ArrayList<String> getTypeStringList(String text, MarkDownType type) {
         ArrayList<String> strings = new ArrayList<>();
-        List<Item> items = matchType(type, text);
+        List<Item> items = matchRegex(type.getRegex(), text);
         for (Item item : items) {
             strings.add(item.getText());
         }
         return strings;
     }
 
+    /**
+     * 存在匹配正则项
+     */
+    public static boolean findRegex(String regex, CharSequence text) {
+        return Pattern.compile(regex).matcher(text).find();
+    }
 
-    public static List<Item> matchType(MarkDownType type, CharSequence text) {
+    /**
+     * 获取所有满足正则项
+     */
+    public static List<Item> matchRegex(String regex, CharSequence text) {
         List<Item> items = new LinkedList<>();
-        Pattern pattern = Pattern.compile(type.getRegex());
+        Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
-            items.add(new Item(type, matcher.start(), matcher.end(), matcher.group()));
+            items.add(new Item(matcher.start(), matcher.end(), matcher.group()));
         }
         return items;
     }

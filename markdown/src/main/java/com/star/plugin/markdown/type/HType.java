@@ -17,7 +17,7 @@ public class HType implements MarkDownType {
 
     @Override
     public String getRegex() {
-        return "#{1,6} .{1,}";
+        return "?:(^|\\n)#{1,6} .{1,}";
     }
 
     @Override
