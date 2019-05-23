@@ -74,6 +74,9 @@ public class MarkDown {
                     });
         } else {
             textView.setText(getDisplaySpan(textView, text, useTypes), TextView.BufferType.SPANNABLE);
+            if (listener != null) {
+                listener.onFinish(text);
+            }
         }
     }
 
