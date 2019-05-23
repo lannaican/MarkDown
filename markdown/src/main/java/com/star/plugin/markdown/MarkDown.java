@@ -156,7 +156,12 @@ public class MarkDown {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
-            items.add(new Item(matcher.start(), matcher.end(), matcher.group()));
+            Item item = new Item(matcher.start(), matcher.end(), matcher.group());
+            if (item.getText().startsWith("\n")) {  //针对首字符换行处理
+                item.setText(item.getText().substring(1));
+                item.setStart(item.getStart() + 1);
+            }
+            items.add(item);
         }
         return items;
     }
