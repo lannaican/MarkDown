@@ -145,6 +145,19 @@ public class MarkDown {
     }
 
     /**
+     * 删除满足Type的字符串
+     */
+    public static String removeTypeString(String text, MarkDownType type) {
+        List<Item> items = matchRegex(type.getRegex(), text);
+        StringBuilder builder = new StringBuilder(text);
+        for (int i=items.size()-1; i>=0; i--) {
+            Item item = items.get(i);
+            builder.delete(item.getStart(), item.getEnd());
+        }
+        return builder.toString();
+    }
+
+    /**
      * 存在匹配正则项
      */
     public static boolean findRegex(String regex, CharSequence text) {
