@@ -68,6 +68,11 @@ public class MarkDown {
                             listener.onFinish(text);
                         }
                     }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
                 });
     }
 

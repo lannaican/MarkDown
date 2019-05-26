@@ -22,7 +22,11 @@ public class QuoteComponent implements Component {
 
     @Override
     public SpanInfo getSpanInfo(TextView textView, String item, int start, int end, SpanStyle style) {
-        return new SpanInfo(new QuoteSpan(), start, end);
+        if (style == SpanStyle.Simple) {
+            return null;
+        } else {
+            return new SpanInfo(new QuoteSpan(), start, end);
+        }
     }
 
     @Override
