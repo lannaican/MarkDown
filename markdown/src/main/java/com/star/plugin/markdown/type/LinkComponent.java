@@ -90,6 +90,7 @@ public class LinkComponent implements Component {
         boolean isImage = isImage(item);
         if (isImage && style == ReplaceStyle.Origin) {
             builder.delete(start, end);
+            return builder;
         } else {
             if (isImage) {
                 if (end == builder.length() || (end < builder.length() && builder.charAt(end) != '\n')) {
@@ -105,7 +106,6 @@ public class LinkComponent implements Component {
             }
             return builder;
         }
-        return null;
     }
 
 
