@@ -164,13 +164,13 @@ public class MarkDown {
      */
     private static boolean isInvalidComponent(Component component, Class...useComponents) {
         if (useComponents == null || useComponents.length == 0) {
-            return true;
+            return false;
         }
         for (Class cls : useComponents) {
             if (component.getClass() == cls) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 }
