@@ -108,6 +108,25 @@ public class MarkDown {
     }
 
     /**
+     * 编辑模式设置样式
+     */
+    public static void set(TextView textView, Spannable spannable, Class...useComponents) {
+        MarkDownHelper.clearSpan(spannable);
+        List<Component> components = provider.getComponents();
+        for (Component component : components) {
+            if (isInvalidComponent(component, useComponents)) {
+                continue;
+            }
+            List<Item> items = getItems(component.getRegex(), spannable);
+            for (Item item : items) {
+                SpanInfo info = component.getSpanInfo(textView, item.getText(),
+                        item.getStart(), item.getEnd(), SpanStyle.Editing);
+                MarkDownHelper.setSpan(spannable, info);
+            }
+        }
+    }
+
+    /**
      * 获取展示Span
      */
     public static SpannableStringBuilder getSpan(TextView textView, String text, SpanStyle spanStyle,
