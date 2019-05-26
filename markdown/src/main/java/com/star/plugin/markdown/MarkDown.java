@@ -53,6 +53,13 @@ public class MarkDown {
     public static void loadAsync(final TextView textView, final String text,
                                  final SpanStyle spanStyle, final ReplaceStyle replaceStyle,
                                  final OnMarkDownListener listener, final Class...components) {
+        if (text.length() == 0) {
+            textView.setText(null);
+            if (listener != null) {
+                listener.onFinish(text);
+            }
+            return;
+        }
         Observable.fromCallable(new Callable<SpannableStringBuilder>() {
             @Override
             public SpannableStringBuilder call() {
@@ -80,6 +87,10 @@ public class MarkDown {
      * 同步加载
      */
     public static void load(TextView textView, Spannable spannable, SpanStyle style, Class...useComponents) {
+        if (spannable.length() == 0) {
+            textView.setText(null);
+            return;
+        }
         MarkDownHelper.clearSpan(spannable);
         List<Component> components = provider.getComponents();
         for (Component component : components) {
@@ -93,6 +104,7 @@ public class MarkDown {
                 MarkDownHelper.setSpan(spannable, info);
             }
         }
+        textView.setText(spannable);
     }
 
     /**
