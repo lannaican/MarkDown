@@ -89,6 +89,9 @@ public class LinkComponent implements Component {
     public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end, ReplaceStyle style) {
         boolean isImage = isImage(item);
         if (isImage && style == ReplaceStyle.Origin) {
+            if (end < builder.length() && builder.charAt(end) == '\n') {
+                end++;
+            }
             builder.delete(start, end);
             return builder;
         } else {
