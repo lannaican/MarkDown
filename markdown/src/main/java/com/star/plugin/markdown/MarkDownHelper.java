@@ -3,8 +3,8 @@ package com.star.plugin.markdown;
 import android.text.Spannable;
 import android.text.Spanned;
 
-import com.star.plugin.markdown.model.Item;
 import com.star.plugin.markdown.span.base.MarkDownSpan;
+import com.star.plugin.markdown.model.SpanInfo;
 
 /**
  * Detail：
@@ -26,8 +26,17 @@ public class MarkDownHelper {
     /**
      * 设置Span
      */
-    public static void setSpan(Spannable spannable, Object span, Item item) {
-        spannable.setSpan(span, item.getStart(), item.getEnd(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+    public static void setSpan(Spannable spannable, SpanInfo info) {
+        if (info != null) {
+            setSpan(spannable, info.getSpan(), info.getStart(), info.getEnd());
+        }
+    }
+
+    /**
+     * 设置Span
+     */
+    public static void setSpan(Spannable spannable, Object span, int start, int end) {
+        spannable.setSpan(span, start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
     }
 
 }

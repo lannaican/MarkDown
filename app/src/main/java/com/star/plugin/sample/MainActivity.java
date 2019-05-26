@@ -1,25 +1,14 @@
 package com.star.plugin.sample;
 
 import androidx.appcompat.app.AppCompatActivity;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
-import android.widget.EditText;
-import android.widget.TextView;
 
-import com.star.plugin.markdown.MarkDown;
 import com.star.plugin.markdown.MarkDownEditText;
 import com.star.plugin.markdown.MarkDownTextView;
-import com.star.plugin.markdown.type.MentionType;
-
-import java.util.concurrent.Callable;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("CheckResult")
             @Override
             public void afterTextChanged(Editable s) {
-                textView.setMarkDown(s.toString());
+
             }
         });
     }

@@ -1,6 +1,6 @@
 package com.star.plugin.markdown.type.provider;
 
-import com.star.plugin.markdown.type.MarkDownType;
+import com.star.plugin.markdown.type.Component;
 
 import java.util.List;
 
@@ -9,8 +9,8 @@ import java.util.List;
  * Author：Stars
  * Create Time：2019/5/7 9:28
  */
-public interface MarkDownTypeProvider {
+public interface ComponentProvider {
 
-    List<MarkDownType> getTypes();
+    List<Component> getComponents();
 
 }

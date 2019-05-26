@@ -7,9 +7,12 @@ import android.widget.TextView;
 
 import com.star.plugin.markdown.listener.OnMarkDownListener;
 import com.star.plugin.markdown.model.Item;
+import com.star.plugin.markdown.model.ReplaceStyle;
+import com.star.plugin.markdown.model.SpanInfo;
+import com.star.plugin.markdown.model.SpanStyle;
 import com.star.plugin.markdown.property.MarkDownProperty;
-import com.star.plugin.markdown.type.MarkDownType;
-import com.star.plugin.markdown.type.provider.MarkDownTypeProvider;
+import com.star.plugin.markdown.type.Component;
+import com.star.plugin.markdown.type.provider.ComponentProvider;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -30,10 +33,10 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class MarkDown {
 
-    private static MarkDownTypeProvider provider;
+    private static ComponentProvider provider;
     private static MarkDownProperty property;
 
-    public static void init(MarkDownTypeProvider provider, MarkDownProperty property) {
+    public static void init(ComponentProvider provider, MarkDownProperty property) {
         MarkDown.provider = provider;
         MarkDown.property = property;
     }
@@ -41,90 +44,84 @@ public class MarkDown {
     public static MarkDownProperty getProperty() {
         return property;
     }
-    
+
+    /**
+     * 异步加载
+     */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("CheckResult")
-    public static void set(final TextView textView, final String text, final OnMarkDownListener listener, final Class...useTypes) {
-        String[] regex = property.getAsyncLoadRegex();
-        boolean async = false;
-        if (regex != null) {
-            for (String reg : regex) {
-                if (findRegex(reg, text)) {
-                    async = true;
-                    break;
-                }
-            }
-        }
-        if (async) {
-            Observable.fromCallable(new Callable<SpannableStringBuilder>() {
-                @Override
-                public SpannableStringBuilder call() {
-                    return getDisplaySpan(textView, text, useTypes);
-                }})
-                    .subscribeOn(Schedulers.computation())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<SpannableStringBuilder>() {
-                        @Override
-                        public void accept(SpannableStringBuilder builder) {
-                            textView.setText(builder, TextView.BufferType.SPANNABLE);
-                            if (listener != null) {
-                                listener.onFinish(text);
-                            }
+    public static void loadAsync(final TextView textView, final String text,
+                                 final SpanStyle spanStyle, final ReplaceStyle replaceStyle,
+                                 final OnMarkDownListener listener, final Class...components) {
+        Observable.fromCallable(new Callable<SpannableStringBuilder>() {
+            @Override
+            public SpannableStringBuilder call() {
+                return getSpan(textView, text, spanStyle, replaceStyle, components);
+            }})
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<SpannableStringBuilder>() {
+                    @Override
+                    public void accept(SpannableStringBuilder builder) {
+                        textView.setText(builder, TextView.BufferType.SPANNABLE);
+                        if (listener != null) {
+                            listener.onFinish(text);
                         }
-                    });
-        } else {
-            textView.setText(getDisplaySpan(textView, text, useTypes), TextView.BufferType.SPANNABLE);
-            if (listener != null) {
-                listener.onFinish(text);
-            }
-        }
+                    }
+                });
     }
 
     /**
-     * 编辑模式下设置Span
+     * 同步加载
      */
-    public static void setEditing(TextView textView, Spannable spannable, Class...useTypes) {
+    public static void load(TextView textView, Spannable spannable, SpanStyle style, Class...useComponents) {
         MarkDownHelper.clearSpan(spannable);
-        List<MarkDownType> types = provider.getTypes();
-        for (MarkDownType type : types) {
-            if (!validType(type, useTypes)) {
+        List<Component> components = provider.getComponents();
+        for (Component component : components) {
+            if (isInvalidComponent(component, useComponents)) {
                 continue;
             }
-            List<Item> items = matchRegex(type.getRegex(), spannable);
+            List<Item> items = getItems(component.getRegex(), spannable);
             for (Item item : items) {
-                type.setSpan(textView, spannable, item, true);
+                SpanInfo info = component.getSpanInfo(textView, item.getText(),
+                        item.getStart(), item.getEnd(), style);
+                MarkDownHelper.setSpan(spannable, info);
             }
         }
     }
 
     /**
-     * 获取展示Span,非UI线程
+     * 获取展示Span
      */
-    public static SpannableStringBuilder getDisplaySpan(TextView textView, String text, Class...useTypes) {
-        List<MarkDownType> types = provider.getTypes();
+    public static SpannableStringBuilder getSpan(TextView textView, String text, SpanStyle spanStyle,
+                                                 ReplaceStyle replaceStyle, Class...useComponents) {
+        List<Component> components = provider.getComponents();
         SpannableStringBuilder builder = new SpannableStringBuilder(text);
-        for (MarkDownType type : types) {
-            if (!validType(type, useTypes)) {
+        for (Component component : components) {
+            if (isInvalidComponent(component, useComponents)) {
                 continue;
             }
-            List<Item> items = matchRegex(type.getRegex(), text);
+            List<Item> items = getItems(component.getRegex(), text);
             for (Item item : items) {
-                type.setSpan(textView, builder, item, false);
+                SpanInfo info = component.getSpanInfo(textView, item.getText(),
+                        item.getStart(), item.getEnd(), spanStyle);
+                MarkDownHelper.setSpan(builder, info);
             }
         }
         int diffCount;
-        for (MarkDownType type : types) {
-            if (!validType(type, useTypes)) {
+        for (Component component : components) {
+            if (isInvalidComponent(component, useComponents)) {
                 continue;
             }
-            List<Item> items = matchRegex(type.getRegex(), builder);
+            List<Item> items = getItems(component.getRegex(), builder);
             diffCount = text.length() - builder.length();
             int diffLength = 0;
             for (Item item : items) {
                 item.setStart(item.getStart() - diffLength);
                 item.setEnd(item.getEnd() - diffLength);
                 SpannableStringBuilder newBuilder;
-                newBuilder = type.replaceString(builder, item);
+                newBuilder = component.replaceText(builder, item.getText(),
+                        item.getStart(), item.getEnd(), replaceStyle);
                 diffLength = text.length() - diffCount - newBuilder.length();
                 builder = newBuilder;
             }
@@ -135,9 +132,9 @@ public class MarkDown {
     /**
      * 获取满足Type的字符串
      */
-    public static ArrayList<String> getTypeStringList(String text, MarkDownType type) {
+    public static ArrayList<String> getTypeStringList(String text, Component type) {
         ArrayList<String> strings = new ArrayList<>();
-        List<Item> items = matchRegex(type.getRegex(), text);
+        List<Item> items = getItems(type.getRegex(), text);
         for (Item item : items) {
             strings.add(item.getText());
         }
@@ -145,29 +142,9 @@ public class MarkDown {
     }
 
     /**
-     * 删除满足Type的字符串
-     */
-    public static String removeTypeString(String text, MarkDownType type) {
-        List<Item> items = matchRegex(type.getRegex(), text);
-        StringBuilder builder = new StringBuilder(text);
-        for (int i=items.size()-1; i>=0; i--) {
-            Item item = items.get(i);
-            builder.delete(item.getStart(), item.getEnd());
-        }
-        return builder.toString();
-    }
-
-    /**
-     * 存在匹配正则项
-     */
-    public static boolean findRegex(String regex, CharSequence text) {
-        return Pattern.compile(regex).matcher(text).find();
-    }
-
-    /**
      * 获取所有满足正则项
      */
-    public static List<Item> matchRegex(String regex, CharSequence text) {
+    public static List<Item> getItems(String regex, CharSequence text) {
         List<Item> items = new LinkedList<>();
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(text);
@@ -182,12 +159,15 @@ public class MarkDown {
         return items;
     }
 
-    private static boolean validType(MarkDownType type, Class...useTypes) {
-        if (useTypes == null || useTypes.length == 0) {
+    /**
+     * 判断类型无效
+     */
+    private static boolean isInvalidComponent(Component component, Class...useComponents) {
+        if (useComponents == null || useComponents.length == 0) {
             return true;
         }
-        for (Class cls : useTypes) {
-            if (type.getClass() == cls) {
+        for (Class cls : useComponents) {
+            if (component.getClass() == cls) {
                 return true;
             }
         }

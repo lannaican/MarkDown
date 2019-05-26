@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide;
 import com.star.plugin.markdown.MarkDown;
 import com.star.plugin.markdown.property.DefaultMarkDownProperty;
 import com.star.plugin.markdown.property.ImageLoader;
-import com.star.plugin.markdown.type.provider.DefaultMarkDownTypeProvider;
+import com.star.plugin.markdown.type.provider.DefaultComponentProvider;
 
 import java.util.concurrent.ExecutionException;
 
@@ -20,7 +20,7 @@ public class MarkDownApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        MarkDown.init(new DefaultMarkDownTypeProvider(),
+        MarkDown.init(new DefaultComponentProvider(),
                 new DefaultMarkDownProperty(this){
                     @Override
                     public ImageLoader getImageLoader() {

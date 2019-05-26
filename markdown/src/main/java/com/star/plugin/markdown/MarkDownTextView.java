@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.method.Touch;
 import android.util.AttributeSet;
@@ -11,8 +12,9 @@ import android.view.MotionEvent;
 import android.widget.TextView;
 
 import com.star.plugin.markdown.listener.OnMarkDownListener;
+import com.star.plugin.markdown.model.ReplaceStyle;
+import com.star.plugin.markdown.model.SpanStyle;
 import com.star.plugin.markdown.span.base.ClickableSpan;
-import com.star.plugin.markdown.type.MentionType;
 
 import androidx.appcompat.widget.AppCompatTextView;
 
@@ -39,12 +41,19 @@ public class MarkDownTextView extends AppCompatTextView {
         setMovementMethod(new LinkTouchMovementMethod());
     }
 
-    public void setMarkDown(String text, Class...useTypes) {
-        MarkDown.set(this, text, null, useTypes);
+    /**
+     * 同步加载
+     */
+    public void load(String text, SpanStyle spanStyle, Class...components) {
+        MarkDown.load(this, new SpannableString(text), spanStyle, components);
     }
 
-    public void setMarkDown(String text, OnMarkDownListener listener, Class...useTypes) {
-        MarkDown.set(this, text, listener, useTypes);
+    /**
+     * 异步加载
+     */
+    public void loadAsync(String text, SpanStyle spanStyle, ReplaceStyle replaceStyle,
+                          OnMarkDownListener listener, Class...components) {
+        MarkDown.loadAsync(this, text, spanStyle, replaceStyle, listener, components);
     }
 
     @Override

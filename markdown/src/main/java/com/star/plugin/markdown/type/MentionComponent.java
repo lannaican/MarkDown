@@ -1,14 +1,14 @@
 package com.star.plugin.markdown.type;
 
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.TextView;
 
 import com.star.plugin.markdown.MarkDown;
-import com.star.plugin.markdown.MarkDownHelper;
 import com.star.plugin.markdown.listener.OnSpanClickListener;
-import com.star.plugin.markdown.model.Item;
+import com.star.plugin.markdown.model.ReplaceStyle;
+import com.star.plugin.markdown.model.SpanInfo;
+import com.star.plugin.markdown.model.SpanStyle;
 import com.star.plugin.markdown.span.MentionSpan;
 
 /**
@@ -16,7 +16,7 @@ import com.star.plugin.markdown.span.MentionSpan;
  * Author：Stars
  * Create Time：2019/5/7 19:38
  */
-public class MentionType implements MarkDownType {
+public class MentionComponent implements Component {
 
     @Override
     public String getRegex() {
@@ -24,23 +24,23 @@ public class MentionType implements MarkDownType {
     }
 
     @Override
-    public void setSpan(TextView textView, Spannable spannable, Item item, final boolean edit) {
-        final String name = item.getText().substring(1);
-        MarkDownHelper.setSpan(spannable, new MentionSpan() {
+    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end, final SpanStyle style) {
+        final String name = item.substring(1);
+        return new SpanInfo(new MentionSpan() {
             @Override
             public void onSpanClick(View view) {
-                if (!edit) {
+                if (style == SpanStyle.Display) {
                     OnSpanClickListener clickListener = MarkDown.getProperty().getClickListener();
                     if (clickListener != null) {
                         clickListener.onMentionClick(name);
                     }
                 }
             }
-        }, item);
+        }, start, end);
     }
 
     @Override
-    public SpannableStringBuilder replaceString(SpannableStringBuilder builder, Item item) {
+    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end, ReplaceStyle style) {
         return builder;
     }
 }

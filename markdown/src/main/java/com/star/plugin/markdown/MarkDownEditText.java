@@ -5,6 +5,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 
+import com.star.plugin.markdown.model.SpanStyle;
+
 import androidx.appcompat.widget.AppCompatEditText;
 
 /**
@@ -44,7 +46,7 @@ public class MarkDownEditText extends AppCompatEditText {
 
             @Override
             public void afterTextChanged(Editable s) {
-                MarkDown.setEditing(MarkDownEditText.this, s);
+                MarkDown.load(MarkDownEditText.this, s, SpanStyle.Editing);
             }
         });
     }
