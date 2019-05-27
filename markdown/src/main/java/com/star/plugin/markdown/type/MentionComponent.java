@@ -29,11 +29,9 @@ public class MentionComponent implements Component {
         return new SpanInfo(new MentionSpan() {
             @Override
             public void onSpanClick(View view) {
-                if (style == SpanStyle.Display) {
-                    OnSpanClickListener clickListener = MarkDown.getProperty().getClickListener();
-                    if (clickListener != null) {
-                        clickListener.onMentionClick(name);
-                    }
+                OnSpanClickListener clickListener = MarkDown.getProperty().getClickListener();
+                if (clickListener != null) {
+                    clickListener.onMentionClick(name);
                 }
             }
         }, start, end);
