@@ -2,8 +2,6 @@ package com.star.plugin.markdown.property;
 
 import android.graphics.drawable.Drawable;
 
-import com.star.plugin.markdown.listener.OnSpanClickListener;
-
 /**
  * Detail：属性
  * Author：Stars
@@ -53,15 +51,9 @@ public interface MarkDownProperty {
     //编辑模式图片间距
     int getLinkEditGapWidth();
 
-    //浏览模式图片加载器
-    ImageLoader getImageLoader();
-
     int getImageDesSize();
 
     int getImageDesColor();
-
-    //点击监听
-    OnSpanClickListener getClickListener();
 
     int getIndexPadding();
 

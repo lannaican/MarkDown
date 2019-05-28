@@ -1,5 +1,7 @@
 package com.star.plugin.markdown.type.provider;
 
+import android.graphics.Bitmap;
+
 import com.star.plugin.markdown.type.CharacterComponent;
 import com.star.plugin.markdown.type.HComponent;
 import com.star.plugin.markdown.type.LinkComponent;
@@ -28,8 +30,28 @@ public class DefaultComponentProvider implements ComponentProvider {
         components.add(new CharacterComponent());
         components.add(new QuoteComponent());
         components.add(new LineComponent());
-        components.add(new LinkComponent());
-        components.add(new MentionComponent());
+        components.add(new LinkComponent() {
+            @Override
+            public Bitmap getBitmap(String url) {
+                return null;
+            }
+
+            @Override
+            public void onImageClick(ArrayList<String> images, int index) {
+
+            }
+
+            @Override
+            public void onUrlClick(String url) {
+
+            }
+        });
+        components.add(new MentionComponent() {
+            @Override
+            public void onMentionClick(String name) {
+
+            }
+        });
         components.add(new StrikethroughComponent());
         components.add(new IndexComponent());
     }

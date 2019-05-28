@@ -4,8 +4,6 @@ import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.TextView;
 
-import com.star.plugin.markdown.MarkDown;
-import com.star.plugin.markdown.listener.OnSpanClickListener;
 import com.star.plugin.markdown.model.ReplaceStyle;
 import com.star.plugin.markdown.model.SpanInfo;
 import com.star.plugin.markdown.model.SpanStyle;
@@ -16,7 +14,7 @@ import com.star.plugin.markdown.span.MentionSpan;
  * Author：Stars
  * Create Time：2019/5/7 19:38
  */
-public class MentionComponent implements Component {
+public abstract class MentionComponent implements Component {
 
     @Override
     public String getRegex() {
@@ -29,10 +27,7 @@ public class MentionComponent implements Component {
         return new SpanInfo(new MentionSpan() {
             @Override
             public void onSpanClick(View view) {
-                OnSpanClickListener clickListener = MarkDown.getProperty().getClickListener();
-                if (clickListener != null) {
-                    clickListener.onMentionClick(name);
-                }
+                onMentionClick(name);
             }
         }, start, end);
     }
@@ -41,4 +36,9 @@ public class MentionComponent implements Component {
     public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end, ReplaceStyle style) {
         return builder;
     }
+
+    /**
+     * 点击事件
+     */
+    public abstract void onMentionClick(String name);
 }

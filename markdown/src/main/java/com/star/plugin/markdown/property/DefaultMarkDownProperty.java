@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 import com.star.plugin.markdown.R;
-import com.star.plugin.markdown.listener.OnSpanClickListener;
 
 /**
  * Detail：属性
@@ -98,11 +97,6 @@ public class DefaultMarkDownProperty implements MarkDownProperty {
     }
 
     @Override
-    public ImageLoader getImageLoader() {
-        return null;
-    }
-
-    @Override
     public int getImageDesSize() {
         return getSize(R.dimen.md_image_font_size);
     }
@@ -110,11 +104,6 @@ public class DefaultMarkDownProperty implements MarkDownProperty {
     @Override
     public int getImageDesColor() {
         return 0xFFAAAAAA;
-    }
-
-    @Override
-    public OnSpanClickListener getClickListener() {
-        return null;
     }
 
     @Override

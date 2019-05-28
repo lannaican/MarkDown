@@ -6,12 +6,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.star.plugin.markdown.MarkDown;
-import com.star.plugin.markdown.listener.OnSpanClickListener;
 import com.star.plugin.markdown.model.Item;
 import com.star.plugin.markdown.model.ReplaceStyle;
 import com.star.plugin.markdown.model.SpanInfo;
 import com.star.plugin.markdown.model.SpanStyle;
-import com.star.plugin.markdown.property.ImageLoader;
 import com.star.plugin.markdown.span.ImageSpan;
 import com.star.plugin.markdown.span.LinkEditSpan;
 import com.star.plugin.markdown.span.UrlSpan;
@@ -24,7 +22,7 @@ import java.util.List;
  * Author：Stars
  * Create Time：2019/5/7 15:27
  */
-public class LinkComponent implements Component {
+public abstract class LinkComponent implements Component {
 
     @Override
     public String getRegex() {
@@ -58,23 +56,16 @@ public class LinkComponent implements Component {
             if (isImage) {
                 String des = getDes(item);
                 final String url = getUrl(item);
-                ImageLoader loader = MarkDown.getProperty().getImageLoader();
-                Bitmap bitmap = null;
-                if (loader != null) {
-                    bitmap = loader.getBitmap(url);
-                }
+                Bitmap bitmap = getBitmap(url);
                 ImageSpan span = new ImageSpan(textView, bitmap, des) {
                     @Override
                     public void onSpanClick(View view) {
-                        OnSpanClickListener clickListener = MarkDown.getProperty().getClickListener();
-                        if (clickListener != null) {
-                            ArrayList<String> images = new ArrayList<>();
-                            List<Item> items = MarkDown.getItems("!\\[.*?\\]\\(.*?\\)", textView.getText());
-                            for (Item i : items) {
-                                images.add(getUrl(i.getText()));
-                            }
-                            clickListener.onImageClick(images, images.indexOf(url));
+                        ArrayList<String> images = new ArrayList<>();
+                        List<Item> items = MarkDown.getItems("!\\[.*?\\]\\(.*?\\)", textView.getText());
+                        for (Item i : items) {
+                            images.add(getUrl(i.getText()));
                         }
+                        onImageClick(images, images.indexOf(url));
                     }
                 };
                 return new SpanInfo(span, start, end);
@@ -111,16 +102,28 @@ public class LinkComponent implements Component {
         }
     }
 
+    /**
+     * 获取Bitmap
+     */
+    public abstract Bitmap getBitmap(String url);
+
+    /**
+     * 点击图片
+     */
+    public abstract void onImageClick(ArrayList<String> images, int index);
+
+    /**
+     * 点击链接
+     */
+    public abstract void onUrlClick(String url);
+
 
     private SpanInfo getUrlDisplaySpanInfo(String item, int start, int end) {
         final String url = getUrl(item);
         UrlSpan span = new UrlSpan() {
             @Override
             public void onSpanClick(View view) {
-                OnSpanClickListener clickListener = MarkDown.getProperty().getClickListener();
-                if (clickListener != null) {
-                    clickListener.onUrlClick(url);
-                }
+                onUrlClick(url);
             }
         };
         return new SpanInfo(span, start, end);

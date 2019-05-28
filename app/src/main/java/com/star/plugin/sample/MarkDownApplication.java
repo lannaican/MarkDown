@@ -1,15 +1,10 @@
 package com.star.plugin.sample;
 
 import android.app.Application;
-import android.graphics.Bitmap;
 
-import com.bumptech.glide.Glide;
 import com.star.plugin.markdown.MarkDown;
 import com.star.plugin.markdown.property.DefaultMarkDownProperty;
-import com.star.plugin.markdown.property.ImageLoader;
 import com.star.plugin.markdown.type.provider.DefaultComponentProvider;
-
-import java.util.concurrent.ExecutionException;
 
 /**
  * Detail：
@@ -21,27 +16,6 @@ public class MarkDownApplication extends Application {
     public void onCreate() {
         super.onCreate();
         MarkDown.init(new DefaultComponentProvider(),
-                new DefaultMarkDownProperty(this){
-                    @Override
-                    public ImageLoader getImageLoader() {
-                        return new ImageLoader() {
-                            @Override
-                            public Bitmap getBitmap(String path) {
-                                try {
-                                    return Glide.with(MarkDownApplication.this)
-                                            .asBitmap()
-                                            .load(path)
-                                            .submit()
-                                            .get();
-                                } catch (ExecutionException e) {
-                                    e.printStackTrace();
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                return null;
-                            }
-                        };
-                    }
-                });
+                new DefaultMarkDownProperty(this));
     }
 }
