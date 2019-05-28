@@ -17,7 +17,7 @@ public class QuoteComponent implements Component {
 
     @Override
     public String getRegex() {
-        return "(^|\\n)> .{1,}\\n?";
+        return "(^|\\n)> .{1,}?";
     }
 
     @Override

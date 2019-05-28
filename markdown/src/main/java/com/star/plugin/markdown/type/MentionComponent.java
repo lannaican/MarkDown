@@ -20,7 +20,7 @@ public class MentionComponent implements Component {
 
     @Override
     public String getRegex() {
-        return "@[\\p{L}0-9_-]{1,9}";
+        return "@\\S{1,12}";
     }
 
     @Override

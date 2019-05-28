@@ -39,7 +39,20 @@ public class HComponent implements Component {
      */
     private int getLevel(String text, int start, int end) {
         end = Math.min(end - start, 6);
-        return text.substring(0, end).lastIndexOf("#") + 1;
+        String startStr = text.substring(0, end);
+        if (startStr.startsWith("######")) {
+            return 6;
+        } else if (startStr.startsWith("#####")) {
+            return 5;
+        } else if (startStr.startsWith("####")) {
+            return 4;
+        } else if (startStr.startsWith("###")) {
+            return 3;
+        } else if (startStr.startsWith("##")) {
+            return 2;
+        } else {
+            return 1;
+        }
     }
 
 }
