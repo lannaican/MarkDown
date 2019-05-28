@@ -5,9 +5,11 @@ import com.star.plugin.markdown.component.Component;
 import com.star.plugin.markdown.component.HComponent;
 import com.star.plugin.markdown.component.IndexComponent;
 import com.star.plugin.markdown.component.LineComponent;
+import com.star.plugin.markdown.component.MentionComponent;
 import com.star.plugin.markdown.component.QuoteComponent;
 import com.star.plugin.markdown.component.StrikethroughComponent;
 import com.star.plugin.markdown.component.provider.ComponentProvider;
+import com.star.plugin.markdown.listener.OnMentionClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,12 @@ public class DefaultComponentProvider implements ComponentProvider {
         components.add(new QuoteComponent());
         components.add(new LineComponent());
 //        components.add(new LinkComponent());
-//        components.add(new MentionComponent());
+        components.add(new MentionComponent(new OnMentionClickListener() {
+            @Override
+            public void onClick(String name) {
+
+            }
+        }));
         components.add(new StrikethroughComponent());
         components.add(new IndexComponent());
     }
