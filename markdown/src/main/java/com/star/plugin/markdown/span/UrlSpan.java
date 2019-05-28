@@ -9,4 +9,7 @@ import com.star.plugin.markdown.span.base.CharacterClickSpan;
  */
 public abstract class UrlSpan extends CharacterClickSpan {
 
+    public UrlSpan(int textColor, int pressBackgroundColor) {
+        super(textColor, pressBackgroundColor);
+    }
 }

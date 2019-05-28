@@ -11,8 +11,8 @@ import com.star.plugin.markdown.model.ReplaceStyle;
 import com.star.plugin.markdown.model.SpanInfo;
 import com.star.plugin.markdown.model.SpanStyle;
 import com.star.plugin.markdown.property.MarkDownProperty;
-import com.star.plugin.markdown.type.Component;
-import com.star.plugin.markdown.type.provider.ComponentProvider;
+import com.star.plugin.markdown.component.Component;
+import com.star.plugin.markdown.component.provider.ComponentProvider;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -33,15 +33,25 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class MarkDown {
 
-    private static ComponentProvider provider;
-    private static MarkDownProperty property;
+    private static MarkDown markDown;
+
+    private ComponentProvider provider;
+    private MarkDownProperty property;
 
     public static void init(ComponentProvider provider, MarkDownProperty property) {
-        MarkDown.provider = provider;
-        MarkDown.property = property;
+        markDown = new MarkDown(provider, property);
     }
 
-    public static MarkDownProperty getProperty() {
+    public static MarkDown getInstance() {
+        return markDown;
+    }
+
+    private MarkDown(ComponentProvider provider, MarkDownProperty property) {
+        this.property = property;
+        this.provider = provider;
+    }
+
+    public MarkDownProperty getProperty() {
         return property;
     }
 
@@ -50,9 +60,9 @@ public class MarkDown {
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("CheckResult")
-    public static void loadAsync(final TextView textView, final String text,
-                                 final SpanStyle spanStyle, final ReplaceStyle replaceStyle,
-                                 final OnMarkDownListener listener, final Class...components) {
+    public void loadAsync(final TextView textView, final String text,
+                          final SpanStyle spanStyle, final ReplaceStyle replaceStyle,
+                          final OnMarkDownListener listener, final Class...components) {
         if (text.length() == 0) {
             textView.setText(null);
             if (listener != null) {
@@ -86,7 +96,7 @@ public class MarkDown {
     /**
      * 同步加载
      */
-    public static void load(TextView textView, Spannable spannable, SpanStyle style, Class...useComponents) {
+    public void load(TextView textView, Spannable spannable, SpanStyle style, Class...useComponents) {
         if (spannable.length() == 0) {
             textView.setText(null);
             return;
@@ -110,7 +120,7 @@ public class MarkDown {
     /**
      * 编辑模式设置样式
      */
-    public static void set(TextView textView, Spannable spannable, Class...useComponents) {
+    public void set(TextView textView, Spannable spannable, Class...useComponents) {
         MarkDownHelper.clearSpan(spannable);
         List<Component> components = provider.getComponents();
         for (Component component : components) {
@@ -129,7 +139,7 @@ public class MarkDown {
     /**
      * 获取展示Span
      */
-    public static SpannableStringBuilder getSpan(TextView textView, String text, SpanStyle spanStyle,
+    public SpannableStringBuilder getSpan(TextView textView, String text, SpanStyle spanStyle,
                                                  ReplaceStyle replaceStyle, Class...useComponents) {
         List<Component> components = provider.getComponents();
         SpannableStringBuilder builder = new SpannableStringBuilder(text);
@@ -166,11 +176,11 @@ public class MarkDown {
     }
 
     /**
-     * 获取满足Type的字符串
+     * 获取满足正则的字符串集合
      */
-    public static ArrayList<String> getTypeStringList(String text, Component type) {
+    public ArrayList<String> findStringList(String text, String regex) {
         ArrayList<String> strings = new ArrayList<>();
-        List<Item> items = getItems(type.getRegex(), text);
+        List<Item> items = getItems(regex, text);
         for (Item item : items) {
             strings.add(item.getText());
         }
@@ -180,7 +190,7 @@ public class MarkDown {
     /**
      * 获取所有满足正则项
      */
-    public static List<Item> getItems(String regex, CharSequence text) {
+    public List<Item> getItems(String regex, CharSequence text) {
         List<Item> items = new LinkedList<>();
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(text);
@@ -198,7 +208,7 @@ public class MarkDown {
     /**
      * 判断类型无效
      */
-    private static boolean isInvalidComponent(Component component, Class...useComponents) {
+    private boolean isInvalidComponent(Component component, Class...useComponents) {
         if (useComponents == null || useComponents.length == 0) {
             return false;
         }

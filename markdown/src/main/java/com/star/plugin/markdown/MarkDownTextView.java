@@ -36,7 +36,7 @@ public class MarkDownTextView extends AppCompatTextView {
     public MarkDownTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         if (getLineSpacingMultiplier() == 1) {
-            setLineSpacing(0, MarkDown.getProperty().getLineSpacingMultiplier());
+            setLineSpacing(0, MarkDown.getInstance().getProperty().getLineSpacingMultiplier());
         }
         setMovementMethod(new LinkTouchMovementMethod());
     }
@@ -45,7 +45,7 @@ public class MarkDownTextView extends AppCompatTextView {
      * 同步加载
      */
     public void load(String text, SpanStyle spanStyle, Class...components) {
-        MarkDown.load(this, new SpannableString(text), spanStyle, components);
+        MarkDown.getInstance().load(this, new SpannableString(text), spanStyle, components);
     }
 
     /**
@@ -53,7 +53,7 @@ public class MarkDownTextView extends AppCompatTextView {
      */
     public void loadAsync(String text, SpanStyle spanStyle, ReplaceStyle replaceStyle,
                           OnMarkDownListener listener, Class...components) {
-        MarkDown.loadAsync(this, text, spanStyle, replaceStyle, listener, components);
+        MarkDown.getInstance().loadAsync(this, text, spanStyle, replaceStyle, listener, components);
     }
 
     @Override

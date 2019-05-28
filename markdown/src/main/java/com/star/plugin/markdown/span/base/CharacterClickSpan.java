@@ -4,8 +4,6 @@ import android.graphics.Color;
 import android.text.TextPaint;
 import android.text.style.CharacterStyle;
 
-import com.star.plugin.markdown.MarkDown;
-
 import androidx.annotation.NonNull;
 
 /**
@@ -16,6 +14,13 @@ import androidx.annotation.NonNull;
 public abstract class CharacterClickSpan extends CharacterStyle implements ClickableSpan, MarkDownSpan {
 
     private boolean pressed;
+    private int textColor;
+    private int pressBackgroundColor;
+
+    public CharacterClickSpan(int textColor, int pressBackgroundColor) {
+        this.textColor = textColor;
+        this.pressBackgroundColor = pressBackgroundColor;
+    }
 
     @Override
     public void setPressed(boolean pressed) {
@@ -24,7 +29,7 @@ public abstract class CharacterClickSpan extends CharacterStyle implements Click
 
     @Override
     public void updateDrawState(@NonNull TextPaint textPaint) {
-        textPaint.setColor(MarkDown.getProperty().getColor());
-        textPaint.bgColor = pressed ? MarkDown.getProperty().getPressBackgroundColor() : Color.TRANSPARENT;
+        textPaint.setColor(textColor);
+        textPaint.bgColor = pressed ? pressBackgroundColor: Color.TRANSPARENT;
     }
 }

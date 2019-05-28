@@ -30,7 +30,7 @@ public class MarkDownEditText extends AppCompatEditText {
     }
 
     private void init() {
-        setLineSpacing(0, MarkDown.getProperty().getLineSpacingMultiplier());
+        setLineSpacing(0, MarkDown.getInstance().getProperty().getLineSpacingMultiplier());
         addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -44,7 +44,7 @@ public class MarkDownEditText extends AppCompatEditText {
 
             @Override
             public void afterTextChanged(Editable s) {
-                MarkDown.set(MarkDownEditText.this, s);
+                MarkDown.getInstance().set(MarkDownEditText.this, s);
             }
         });
     }

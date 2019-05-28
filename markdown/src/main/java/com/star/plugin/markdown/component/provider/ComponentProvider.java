@@ -1,6 +1,6 @@
-package com.star.plugin.markdown.type.provider;
+package com.star.plugin.markdown.component.provider;
 
-import com.star.plugin.markdown.type.Component;
+import com.star.plugin.markdown.component.Component;
 
 import java.util.List;
 

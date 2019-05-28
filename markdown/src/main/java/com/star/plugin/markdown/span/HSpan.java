@@ -3,7 +3,6 @@ package com.star.plugin.markdown.span;
 import android.text.TextPaint;
 import android.text.style.MetricAffectingSpan;
 
-import com.star.plugin.markdown.MarkDown;
 import com.star.plugin.markdown.span.base.MarkDownSpan;
 
 import androidx.annotation.NonNull;
@@ -15,22 +14,24 @@ import androidx.annotation.NonNull;
  */
 public class HSpan extends MetricAffectingSpan implements MarkDownSpan {
 
-    private int level;
+    private int color;
+    private int size;
 
-    public HSpan(int level) {
-        this.level = level;
+    public HSpan(int color, int size) {
+        this.color = color;
+        this.size = size;
     }
 
     @Override
     public void updateDrawState(TextPaint tp) {
         tp.setFakeBoldText(true);
-        tp.setColor(MarkDown.getProperty().getHColor());
-        tp.setTextSize(MarkDown.getProperty().getHSize(level));
+        tp.setColor(color);
+        tp.setTextSize(size);
     }
 
     @Override
     public void updateMeasureState(@NonNull TextPaint tp) {
-        tp.setTextSize(MarkDown.getProperty().getHSize(level));
+        tp.setTextSize(size);
     }
 
 }

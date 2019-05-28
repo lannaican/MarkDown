@@ -5,7 +5,6 @@ import android.graphics.Paint;
 import android.text.Layout;
 import android.text.style.LeadingMarginSpan;
 
-import com.star.plugin.markdown.MarkDown;
 import com.star.plugin.markdown.span.base.MarkDownSpan;
 
 /**
@@ -17,15 +16,17 @@ public class IndexSpan implements LeadingMarginSpan, MarkDownSpan {
 
     private int type;
     private boolean draw;
+    private int padding;
 
-    public IndexSpan(int type, boolean draw) {
+    public IndexSpan(int type, int padding, boolean draw) {
         this.type = type;
         this.draw = draw;
+        this.padding = padding;
     }
 
     @Override
     public int getLeadingMargin(boolean first) {
-        return MarkDown.getProperty().getIndexPadding();
+        return padding;
     }
 
     @Override
@@ -33,7 +34,7 @@ public class IndexSpan implements LeadingMarginSpan, MarkDownSpan {
                                   CharSequence text, int start, int end, boolean first, Layout layout) {
         if (first && draw) {
             String str = type > 0 ? type + "." : "•";
-            c.drawText(str, x + dir * MarkDown.getProperty().getIndexPadding() / 3 * 2, baseline, p);
+            c.drawText(str, x + dir * padding / 3 * 2, baseline, p);
         }
     }
 }

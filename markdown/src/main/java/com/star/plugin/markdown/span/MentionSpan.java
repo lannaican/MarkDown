@@ -9,4 +9,7 @@ import com.star.plugin.markdown.span.base.CharacterClickSpan;
  */
 public abstract class MentionSpan extends CharacterClickSpan {
 
+    public MentionSpan(int textColor, int pressBackgroundColor) {
+        super(textColor, pressBackgroundColor);
+    }
 }

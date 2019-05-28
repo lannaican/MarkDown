@@ -1,11 +1,13 @@
-package com.star.plugin.markdown.type;
+package com.star.plugin.markdown.component;
 
 import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
+import com.star.plugin.markdown.MarkDown;
 import com.star.plugin.markdown.model.ReplaceStyle;
 import com.star.plugin.markdown.model.SpanInfo;
 import com.star.plugin.markdown.model.SpanStyle;
+import com.star.plugin.markdown.property.MarkDownProperty;
 import com.star.plugin.markdown.span.QuoteSpan;
 
 /**
@@ -25,7 +27,12 @@ public class QuoteComponent implements Component {
         if (style == SpanStyle.Simple) {
             return null;
         } else {
-            return new SpanInfo(new QuoteSpan(), start, end);
+            MarkDownProperty property = MarkDown.getInstance().getProperty();
+            QuoteSpan span = new QuoteSpan(
+                    property.getQuoteGapWidth(),
+                    property.getQuoteWidth(),
+                    property.getQuoteColor());
+            return new SpanInfo(span, start, end);
         }
     }
 

@@ -1,4 +1,4 @@
-package com.star.plugin.markdown.type;
+package com.star.plugin.markdown.component;
 
 import android.text.SpannableStringBuilder;
 import android.widget.TextView;

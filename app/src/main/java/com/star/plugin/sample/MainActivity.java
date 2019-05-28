@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.util.Log;
 
@@ -14,8 +13,7 @@ import com.star.plugin.markdown.MarkDownEditText;
 import com.star.plugin.markdown.MarkDownTextView;
 import com.star.plugin.markdown.model.ReplaceStyle;
 import com.star.plugin.markdown.model.SpanStyle;
-import com.star.plugin.markdown.type.Component;
-import com.star.plugin.markdown.type.provider.DefaultComponentProvider;
+import com.star.plugin.markdown.component.Component;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         for (Component component : new DefaultComponentProvider().getComponents()) {
             long time = System.currentTimeMillis();
             for (int i=0; i<1; i++) {
-                MarkDown.getItems(component.getRegex(), text);
+                MarkDown.getInstance().getItems(component.getRegex(), text);
             }
             long now = System.currentTimeMillis() - time;
             Log.e("time", component.getClass().getSimpleName() + ":" + now);

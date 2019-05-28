@@ -4,7 +4,6 @@ import android.app.Application;
 
 import com.star.plugin.markdown.MarkDown;
 import com.star.plugin.markdown.property.DefaultMarkDownProperty;
-import com.star.plugin.markdown.type.provider.DefaultComponentProvider;
 
 /**
  * Detail：

@@ -1,8 +1,9 @@
-package com.star.plugin.markdown.type;
+package com.star.plugin.markdown.component;
 
 import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
+import com.star.plugin.markdown.MarkDown;
 import com.star.plugin.markdown.model.ReplaceStyle;
 import com.star.plugin.markdown.model.SpanInfo;
 import com.star.plugin.markdown.model.SpanStyle;
@@ -28,7 +29,11 @@ public class IndexComponent implements Component {
             start++;
         }
         int type = getType(item);
-        return new SpanInfo(new IndexSpan(type, style != SpanStyle.Editing), start, end);
+        IndexSpan span = new IndexSpan(
+                type,
+                MarkDown.getInstance().getProperty().getIndexPadding(),
+                style != SpanStyle.Editing);
+        return new SpanInfo(span, start, end);
     }
 
     @Override

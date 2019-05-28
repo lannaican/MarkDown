@@ -1,11 +1,13 @@
-package com.star.plugin.markdown.type;
+package com.star.plugin.markdown.component;
 
 import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
+import com.star.plugin.markdown.MarkDown;
 import com.star.plugin.markdown.model.ReplaceStyle;
 import com.star.plugin.markdown.model.SpanInfo;
 import com.star.plugin.markdown.model.SpanStyle;
+import com.star.plugin.markdown.property.MarkDownProperty;
 import com.star.plugin.markdown.span.LineSpan;
 
 /**
@@ -25,7 +27,9 @@ public class LineComponent implements Component {
         if (style == SpanStyle.Editing) {
             return null;
         } else {
-            return new SpanInfo(new LineSpan(), start, end);
+            MarkDownProperty property = MarkDown.getInstance().getProperty();
+            LineSpan span = new LineSpan(property.getLineColor(), property.getLineHeight());
+            return new SpanInfo(span, start, end);
         }
     }
 

@@ -3,13 +3,11 @@ package com.star.plugin.markdown.span;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.text.style.DynamicDrawableSpan;
 import android.view.View;
-import android.widget.TextView;
 
 import com.star.plugin.markdown.MarkDown;
 import com.star.plugin.markdown.span.base.ClickableSpan;
@@ -29,6 +27,7 @@ public abstract class ImageSpan extends DynamicDrawableSpan implements Clickable
 
     private String des;
     private int desSize;
+    private int desColor;
 
     private float width;
     private float height;
@@ -39,7 +38,8 @@ public abstract class ImageSpan extends DynamicDrawableSpan implements Clickable
     public ImageSpan(View view, @Nullable Bitmap bitmap, String des) {
         super(ALIGN_BOTTOM);
         this.des = des;
-        this.desSize = MarkDown.getProperty().getImageDesSize();
+        this.desSize = MarkDown.getInstance().getProperty().getImageDesSize();
+        this.desColor = MarkDown.getInstance().getProperty().getImageDesColor();
         this.paddingVertical = desSize;
         if (des == null || des.length() == 0) {
             this.desSize = 0;
@@ -64,7 +64,7 @@ public abstract class ImageSpan extends DynamicDrawableSpan implements Clickable
     @Override
     public int getSize(@NonNull Paint paint, CharSequence text, int start, int end, @Nullable Paint.FontMetricsInt fm) {
         if (fm != null) {
-            fm.ascent = -(int)(height / MarkDown.getProperty().getLineSpacingMultiplier() + desSize * 2 + paddingVertical * 2);
+            fm.ascent = -(int)(height / MarkDown.getInstance().getProperty().getLineSpacingMultiplier() + desSize * 2 + paddingVertical * 2);
             fm.descent = 0;
             fm.top = fm.ascent;
             fm.bottom = 0;
@@ -89,7 +89,7 @@ public abstract class ImageSpan extends DynamicDrawableSpan implements Clickable
             int textColor = paint.getColor();
             float textSize = paint.getTextSize();
             Paint.Align align = paint.getTextAlign();
-            paint.setColor(MarkDown.getProperty().getImageDesColor());
+            paint.setColor(desColor);
             paint.setTextSize(desSize);
             paint.setTextAlign(Paint.Align.CENTER);
             canvas.drawText(des, width / 2, height + paddingVertical + desSize, paint);
