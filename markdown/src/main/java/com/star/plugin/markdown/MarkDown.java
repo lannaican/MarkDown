@@ -57,6 +57,7 @@ public class MarkDown {
 
     /**
      * 异步加载
+     * 显示图片必须使用异步
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("CheckResult")
@@ -96,25 +97,12 @@ public class MarkDown {
     /**
      * 同步加载
      */
-    public void load(TextView textView, Spannable spannable, SpanStyle style, Class...useComponents) {
-        if (spannable.length() == 0) {
+    public void load(TextView textView, String text, SpanStyle style, ReplaceStyle replaceStyle, Class...useComponents) {
+        if (text == null || text.length() == 0) {
             textView.setText(null);
             return;
         }
-        MarkDownHelper.clearSpan(spannable);
-        List<Component> components = provider.getComponents();
-        for (Component component : components) {
-            if (isInvalidComponent(component, useComponents)) {
-                continue;
-            }
-            List<Item> items = getItems(component.getRegex(), spannable);
-            for (Item item : items) {
-                SpanInfo info = component.getSpanInfo(textView, item.getText(),
-                        item.getStart(), item.getEnd(), style);
-                MarkDownHelper.setSpan(spannable, info);
-            }
-        }
-        textView.setText(spannable);
+        textView.setText(getSpan(textView, text, style, replaceStyle, useComponents));
     }
 
     /**

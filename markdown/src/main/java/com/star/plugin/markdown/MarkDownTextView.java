@@ -44,8 +44,8 @@ public class MarkDownTextView extends AppCompatTextView {
     /**
      * 同步加载
      */
-    public void load(String text, SpanStyle spanStyle, Class...components) {
-        MarkDown.getInstance().load(this, new SpannableString(text), spanStyle, components);
+    public void load(String text, SpanStyle spanStyle, ReplaceStyle replaceStyle, Class...components) {
+        MarkDown.getInstance().load(this, text, spanStyle, replaceStyle, components);
     }
 
     /**
