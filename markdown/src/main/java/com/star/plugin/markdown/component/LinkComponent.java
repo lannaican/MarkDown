@@ -5,6 +5,9 @@ import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+
 import com.star.plugin.markdown.MarkDown;
 import com.star.plugin.markdown.listener.OnImageClickListener;
 import com.star.plugin.markdown.listener.OnImageLoadListener;
@@ -13,15 +16,12 @@ import com.star.plugin.markdown.model.Item;
 import com.star.plugin.markdown.model.ReplaceStyle;
 import com.star.plugin.markdown.model.SpanInfo;
 import com.star.plugin.markdown.model.SpanStyle;
-import com.star.plugin.markdown.property.MarkDownProperty;
 import com.star.plugin.markdown.span.ImageSpan;
 import com.star.plugin.markdown.span.LinkEditSpan;
 import com.star.plugin.markdown.span.UrlSpan;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
 
 /**
  * Detail：
@@ -30,13 +30,35 @@ import androidx.annotation.NonNull;
  */
 public class LinkComponent implements Component {
 
+    private int imageIconId;
+    private int imageDesTextSize;
+    private int imageDesTextColor;
+    private int urlIconId;
+    private int urlTextColor;
+    private int urlPressBackgroundColor;
+    private int iconSize;
+
     private OnImageClickListener imageClickListener;
     private OnImageLoadListener imageLoadListener;
     private OnUrlClickListener urlClickListener;
 
-    public LinkComponent(@NonNull OnImageLoadListener imageLoadListener,
+    public LinkComponent(@DrawableRes int imageIconId,
+                         int imageDesTextSize,
+                         int imageDesTextColor,
+                         @DrawableRes int urlIconId,
+                         int urlTextColor,
+                         int urlPressBackgroundColor,
+                         int iconSize,
+                         @NonNull OnImageLoadListener imageLoadListener,
                          @NonNull OnImageClickListener imageClickListener,
                          @NonNull OnUrlClickListener urlClickListener) {
+        this.imageIconId = imageIconId;
+        this.imageDesTextSize = imageDesTextSize;
+        this.imageDesTextColor = imageDesTextColor;
+        this.urlIconId = urlIconId;
+        this.urlTextColor = urlTextColor;
+        this.urlPressBackgroundColor = urlPressBackgroundColor;
+        this.iconSize = iconSize;
         this.imageLoadListener = imageLoadListener;
         this.imageClickListener = imageClickListener;
         this.urlClickListener = urlClickListener;
@@ -49,26 +71,19 @@ public class LinkComponent implements Component {
 
     @Override
     public SpanInfo getSpanInfo(final TextView textView, final String item, int start, int end, SpanStyle style) {
-        MarkDownProperty property = MarkDown.getInstance().getProperty();
         boolean isImage = isImage(item);
         if (style == SpanStyle.Simple) {
             if (isImage) {
                 return null;
             } else {
-                return getUrlDisplaySpanInfo(property, item, start, end);
+                return getUrlDisplaySpanInfo(item, start, end);
             }
         } else if (style == SpanStyle.Editing) {
             if (isImage) {
-                LinkEditSpan span = new LinkEditSpan(
-                        property.getImageDrawable(),
-                        property.getLinkDrawableSize(),
-                        property.getLinkEditGapWidth());
+                LinkEditSpan span = new LinkEditSpan(textView.getResources().getDrawable(imageIconId), iconSize);
                 return new SpanInfo(span, start, end);
             } else {
-                LinkEditSpan span = new LinkEditSpan(
-                        property.getUrlDrawable(),
-                        property.getLinkDrawableSize(),
-                        property.getLinkEditGapWidth());
+                LinkEditSpan span = new LinkEditSpan(textView.getResources().getDrawable(urlIconId), iconSize);
                 return new SpanInfo(span, start, end);
             }
         } else if (style == SpanStyle.Display) {
@@ -76,7 +91,7 @@ public class LinkComponent implements Component {
                 String des = getDes(item);
                 final String url = getUrl(item);
                 Bitmap bitmap = imageLoadListener.getBitmap(textView.getContext(), url);
-                ImageSpan span = new ImageSpan(textView, bitmap, des) {
+                ImageSpan span = new ImageSpan(textView, bitmap, des, imageDesTextSize, imageDesTextColor) {
                     @Override
                     public void onSpanClick(View view) {
                         ArrayList<String> images = new ArrayList<>();
@@ -89,7 +104,7 @@ public class LinkComponent implements Component {
                 };
                 return new SpanInfo(span, start, end);
             } else {
-                return getUrlDisplaySpanInfo(property, item, start, end);
+                return getUrlDisplaySpanInfo(item, start, end);
             }
         }
         return null;
@@ -122,9 +137,9 @@ public class LinkComponent implements Component {
     }
 
 
-    private SpanInfo getUrlDisplaySpanInfo(MarkDownProperty property, String item, int start, int end) {
+    private SpanInfo getUrlDisplaySpanInfo(String item, int start, int end) {
         final String url = getUrl(item);
-        UrlSpan span = new UrlSpan(property.getColor(), property.getPressBackgroundColor()) {
+        UrlSpan span = new UrlSpan(urlTextColor, urlPressBackgroundColor) {
             @Override
             public void onSpanClick(View view) {
                 urlClickListener.onClick(url);

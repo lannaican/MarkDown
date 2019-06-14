@@ -4,10 +4,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.text.style.ReplacementSpan;
 
-import com.star.plugin.markdown.span.base.MarkDownSpan;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.star.plugin.markdown.span.base.MarkDownSpan;
 
 /**
  * Detail：
@@ -19,9 +19,9 @@ public class LineSpan extends ReplacementSpan implements MarkDownSpan {
     private int color;
     private float height;
 
-    public LineSpan(int color, float height) {
-        this.color = color;
+    public LineSpan(float height, int color) {
         this.height = height;
+        this.color = color;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class LineSpan extends ReplacementSpan implements MarkDownSpan {
     @Override
     public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x, int top,
                      int y, int bottom, @NonNull Paint paint) {
-        float center = (top + bottom - (bottom - y) / 2) / 2;
+        float center = (top + bottom - ((float)bottom - y) / 2) / 2;
         int color = paint.getColor();
         paint.setColor(this.color);
         canvas.drawRect(0, center - height / 2, canvas.getWidth(), center + height / 2, paint);

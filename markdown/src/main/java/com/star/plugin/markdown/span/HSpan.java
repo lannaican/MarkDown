@@ -15,9 +15,9 @@ import androidx.annotation.NonNull;
 public class HSpan extends MetricAffectingSpan implements MarkDownSpan {
 
     private int color;
-    private int size;
+    private float size;
 
-    public HSpan(int color, int size) {
+    public HSpan(int color, float size) {
         this.color = color;
         this.size = size;
     }

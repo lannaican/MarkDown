@@ -7,14 +7,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.text.style.DynamicDrawableSpan;
-import android.view.View;
-
-import com.star.plugin.markdown.MarkDown;
-import com.star.plugin.markdown.span.base.ClickableSpan;
-import com.star.plugin.markdown.span.base.MarkDownSpan;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.star.plugin.markdown.span.base.ClickableSpan;
+import com.star.plugin.markdown.span.base.MarkDownSpan;
 
 /**
  * Detail：
@@ -34,13 +33,16 @@ public abstract class ImageSpan extends DynamicDrawableSpan implements Clickable
     private float offsetX;
     private float paddingVertical;
 
+    private float lineSpacingMultiplier;
 
-    public ImageSpan(View view, @Nullable Bitmap bitmap, String des) {
+
+    public ImageSpan(TextView view, @Nullable Bitmap bitmap, String des, int desSize, int desColor) {
         super(ALIGN_BOTTOM);
         this.des = des;
-        this.desSize = MarkDown.getInstance().getProperty().getImageDesSize();
-        this.desColor = MarkDown.getInstance().getProperty().getImageDesColor();
+        this.desSize = desSize;
+        this.desColor = desColor;
         this.paddingVertical = desSize;
+        this.lineSpacingMultiplier = view.getLineSpacingMultiplier();
         if (des == null || des.length() == 0) {
             this.desSize = 0;
         }
@@ -64,7 +66,7 @@ public abstract class ImageSpan extends DynamicDrawableSpan implements Clickable
     @Override
     public int getSize(@NonNull Paint paint, CharSequence text, int start, int end, @Nullable Paint.FontMetricsInt fm) {
         if (fm != null) {
-            fm.ascent = -(int)(height / MarkDown.getInstance().getProperty().getLineSpacingMultiplier() + desSize * 2 + paddingVertical * 2);
+            fm.ascent = -(int)(height / lineSpacingMultiplier + desSize * 2 + paddingVertical * 2);
             fm.descent = 0;
             fm.top = fm.ascent;
             fm.bottom = 0;

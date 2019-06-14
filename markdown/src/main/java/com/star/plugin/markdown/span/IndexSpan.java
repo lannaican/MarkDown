@@ -16,17 +16,17 @@ public class IndexSpan implements LeadingMarginSpan, MarkDownSpan {
 
     private int type;
     private boolean draw;
-    private int padding;
+    private int paddingLeft;
 
-    public IndexSpan(int type, int padding, boolean draw) {
+    public IndexSpan(int type, int paddingLeft, boolean draw) {
         this.type = type;
         this.draw = draw;
-        this.padding = padding;
+        this.paddingLeft = paddingLeft;
     }
 
     @Override
     public int getLeadingMargin(boolean first) {
-        return padding;
+        return paddingLeft;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class IndexSpan implements LeadingMarginSpan, MarkDownSpan {
                                   CharSequence text, int start, int end, boolean first, Layout layout) {
         if (first && draw) {
             String str = type > 0 ? type + "." : "•";
-            c.drawText(str, x + dir * padding / 3 * 2, baseline, p);
+            c.drawText(str, x + dir * paddingLeft / 3 * 2, baseline, p);
         }
     }
 }

@@ -3,7 +3,6 @@ package com.star.plugin.markdown.component;
 import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
-import com.star.plugin.markdown.MarkDown;
 import com.star.plugin.markdown.model.ReplaceStyle;
 import com.star.plugin.markdown.model.SpanInfo;
 import com.star.plugin.markdown.model.SpanStyle;
@@ -15,6 +14,12 @@ import com.star.plugin.markdown.span.IndexSpan;
  * Create Time：2019/4/16 6:46
  */
 public class IndexComponent implements Component {
+
+    private int paddingLeft;
+
+    public IndexComponent(int paddingLeft) {
+        this.paddingLeft = paddingLeft;
+    }
 
     @Override
     public String getRegex() {
@@ -29,10 +34,7 @@ public class IndexComponent implements Component {
             start++;
         }
         int type = getType(item);
-        IndexSpan span = new IndexSpan(
-                type,
-                MarkDown.getInstance().getProperty().getIndexPadding(),
-                style != SpanStyle.Editing);
+        IndexSpan span = new IndexSpan(type, paddingLeft, style != SpanStyle.Editing);
         return new SpanInfo(span, start, end);
     }
 

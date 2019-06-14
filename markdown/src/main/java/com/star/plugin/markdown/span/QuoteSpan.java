@@ -15,18 +15,18 @@ import com.star.plugin.markdown.span.base.MarkDownSpan;
 public class QuoteSpan implements LeadingMarginSpan, MarkDownSpan {
 
     private int gapWidth;
-    private int quoteWidth;
-    private int quoteColor;
+    private int lineWidth;
+    private int lineColor;
 
-    public QuoteSpan(int gapWidth, int quoteWidth, int quoteColor) {
+    public QuoteSpan(int gapWidth, int lineWidth, int lineColor) {
         this.gapWidth = gapWidth;
-        this.quoteWidth = quoteWidth;
-        this.quoteColor = quoteColor;
+        this.lineWidth = lineWidth;
+        this.lineColor = lineColor;
     }
 
     @Override
     public int getLeadingMargin(boolean first) {
-        return gapWidth + quoteWidth;
+        return gapWidth + lineWidth;
     }
 
     @Override
@@ -36,10 +36,10 @@ public class QuoteSpan implements LeadingMarginSpan, MarkDownSpan {
         int color = p.getColor();
 
         p.setStyle(Paint.Style.FILL);
-        p.setColor(quoteColor);
+        p.setColor(lineColor);
 
-        float offsetX = x + dir * quoteWidth;
-        float offsetY = (bottom - baseline) / 2;
+        float offsetX = x + dir * lineWidth;
+        float offsetY = ((float)bottom - baseline) / 2;
         c.drawRect(x, top - offsetY, offsetX, bottom, p);
 
         p.setStyle(style);

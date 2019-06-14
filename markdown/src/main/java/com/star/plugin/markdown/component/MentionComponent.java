@@ -4,15 +4,13 @@ import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.TextView;
 
-import com.star.plugin.markdown.MarkDown;
+import androidx.annotation.NonNull;
+
 import com.star.plugin.markdown.listener.OnMentionClickListener;
 import com.star.plugin.markdown.model.ReplaceStyle;
 import com.star.plugin.markdown.model.SpanInfo;
 import com.star.plugin.markdown.model.SpanStyle;
-import com.star.plugin.markdown.property.MarkDownProperty;
 import com.star.plugin.markdown.span.MentionSpan;
-
-import androidx.annotation.NonNull;
 
 /**
  * Detail：
@@ -21,9 +19,14 @@ import androidx.annotation.NonNull;
  */
 public class MentionComponent implements Component {
 
+    private int textColor;
+    private int pressBackgroundColor;
     private OnMentionClickListener mentionClickListener;
 
-    public MentionComponent(@NonNull OnMentionClickListener mentionClickListener) {
+    public MentionComponent(int textColor, int pressBackgroundColor,
+                            @NonNull OnMentionClickListener mentionClickListener) {
+        this.textColor = textColor;
+        this.pressBackgroundColor = pressBackgroundColor;
         this.mentionClickListener = mentionClickListener;
     }
 
@@ -35,8 +38,7 @@ public class MentionComponent implements Component {
     @Override
     public SpanInfo getSpanInfo(TextView textView, String item, int start, int end, final SpanStyle style) {
         final String name = item.substring(1);
-        MarkDownProperty property =MarkDown.getInstance().getProperty();
-        MentionSpan span = new MentionSpan(property.getColor(), property.getPressBackgroundColor()) {
+        MentionSpan span = new MentionSpan(textColor, pressBackgroundColor) {
             @Override
             public void onSpanClick(View view) {
                 mentionClickListener.onClick(name);

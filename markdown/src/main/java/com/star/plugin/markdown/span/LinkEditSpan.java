@@ -17,17 +17,14 @@ public class LinkEditSpan implements LeadingMarginSpan, MarkDownSpan {
 
     private Drawable drawable;
 
-    private int gapWidth;
-
-    public LinkEditSpan(Drawable drawable, int size, int gapWidth) {
+    public LinkEditSpan(Drawable drawable, int size) {
         this.drawable = drawable;
-        this.gapWidth = gapWidth;
         drawable.setBounds(0, 0, size, size);
     }
 
     @Override
     public int getLeadingMargin(boolean first) {
-        return drawable.getBounds().width() + gapWidth * 2;
+        return drawable.getBounds().width() * 3 / 2;
     }
 
     @Override
@@ -35,7 +32,7 @@ public class LinkEditSpan implements LeadingMarginSpan, MarkDownSpan {
                                   CharSequence text, int start, int end, boolean first, Layout layout) {
         if (first) {
             c.save();
-            c.translate(x + gapWidth, top);
+            c.translate(x, top);
             drawable.draw(c);
             c.restore();
         }

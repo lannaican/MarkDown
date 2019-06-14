@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-            @SuppressWarnings("ResultOfMethodCallIgnored")
             @SuppressLint("CheckResult")
             @Override
             public void afterTextChanged(Editable s) {

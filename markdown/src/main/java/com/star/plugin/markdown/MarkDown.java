@@ -5,14 +5,13 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
+import com.star.plugin.markdown.component.Component;
+import com.star.plugin.markdown.component.provider.ComponentProvider;
 import com.star.plugin.markdown.listener.OnMarkDownListener;
 import com.star.plugin.markdown.model.Item;
 import com.star.plugin.markdown.model.ReplaceStyle;
 import com.star.plugin.markdown.model.SpanInfo;
 import com.star.plugin.markdown.model.SpanStyle;
-import com.star.plugin.markdown.property.MarkDownProperty;
-import com.star.plugin.markdown.component.Component;
-import com.star.plugin.markdown.component.provider.ComponentProvider;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -36,23 +35,17 @@ public class MarkDown {
     private static MarkDown markDown;
 
     private ComponentProvider provider;
-    private MarkDownProperty property;
 
-    public static void init(ComponentProvider provider, MarkDownProperty property) {
-        markDown = new MarkDown(provider, property);
+    public static void init(ComponentProvider provider) {
+        markDown = new MarkDown(provider);
     }
 
     public static MarkDown getInstance() {
         return markDown;
     }
 
-    private MarkDown(ComponentProvider provider, MarkDownProperty property) {
-        this.property = property;
+    private MarkDown(ComponentProvider provider) {
         this.provider = provider;
-    }
-
-    public MarkDownProperty getProperty() {
-        return property;
     }
 
     /**

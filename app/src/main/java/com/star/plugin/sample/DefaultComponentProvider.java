@@ -1,6 +1,7 @@
 package com.star.plugin.sample;
 
 import com.star.plugin.markdown.component.CharacterComponent;
+import com.star.plugin.markdown.component.CodeComponent;
 import com.star.plugin.markdown.component.Component;
 import com.star.plugin.markdown.component.HComponent;
 import com.star.plugin.markdown.component.IndexComponent;
@@ -25,19 +26,20 @@ public class DefaultComponentProvider implements ComponentProvider {
 
     public DefaultComponentProvider() {
         components = new ArrayList<>();
-        components.add(new HComponent());
+        components.add(new HComponent(0xFF000000, new float[]{40, 30, 20, 20, 20, 20}));
         components.add(new CharacterComponent());
-        components.add(new QuoteComponent());
-        components.add(new LineComponent());
+        components.add(new QuoteComponent(20, 5, 0xFFBBBBBB));
+        components.add(new LineComponent(1, 0xFFBBBBBB));
 //        components.add(new LinkComponent());
-        components.add(new MentionComponent(new OnMentionClickListener() {
+        components.add(new MentionComponent(0xFFFB7299, 0xFFBBBBBB, new OnMentionClickListener() {
             @Override
             public void onClick(String name) {
 
             }
         }));
         components.add(new StrikethroughComponent());
-        components.add(new IndexComponent());
+        components.add(new IndexComponent(40));
+        components.add(new CodeComponent(0xFFBBBBBB));
     }
 
     @Override

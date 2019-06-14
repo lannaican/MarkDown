@@ -3,11 +3,9 @@ package com.star.plugin.markdown.component;
 import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
-import com.star.plugin.markdown.MarkDown;
 import com.star.plugin.markdown.model.ReplaceStyle;
 import com.star.plugin.markdown.model.SpanInfo;
 import com.star.plugin.markdown.model.SpanStyle;
-import com.star.plugin.markdown.property.MarkDownProperty;
 import com.star.plugin.markdown.span.HSpan;
 
 /**
@@ -17,9 +15,17 @@ import com.star.plugin.markdown.span.HSpan;
  */
 public class HComponent implements Component {
 
+    private int textColor;
+    private float[] textSizes;
+
+    public HComponent(int textColor, float[] sizes) {
+        this.textColor = textColor;
+        this.textSizes = sizes;
+    }
+
     @Override
     public String getRegex() {
-        return "(^|\\n)#{1,6} .{1,}";
+        return "(^|\\n)#{1,6} .+";
     }
 
     @Override
@@ -27,9 +33,8 @@ public class HComponent implements Component {
         if (style == SpanStyle.Simple) {
             return null;
         } else {
-            MarkDownProperty property = MarkDown.getInstance().getProperty();
             int level = getLevel(item, start, end);
-            HSpan span = new HSpan(property.getHColor(), property.getHSize(level));
+            HSpan span = new HSpan(textColor, textSizes[level]);
             return new SpanInfo(span, start, end);
         }
     }

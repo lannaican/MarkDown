@@ -3,7 +3,6 @@ package com.star.plugin.sample;
 import android.app.Application;
 
 import com.star.plugin.markdown.MarkDown;
-import com.star.plugin.markdown.property.DefaultMarkDownProperty;
 
 /**
  * Detail：
@@ -14,7 +13,6 @@ public class MarkDownApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        MarkDown.init(new DefaultComponentProvider(),
-                new DefaultMarkDownProperty(this));
+        MarkDown.init(new DefaultComponentProvider());
     }
 }
