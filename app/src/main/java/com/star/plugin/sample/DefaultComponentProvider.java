@@ -39,7 +39,7 @@ public class DefaultComponentProvider implements ComponentProvider {
         }));
         components.add(new StrikethroughComponent());
         components.add(new IndexComponent(40));
-        components.add(new CodeComponent(0xFFBBBBBB));
+        components.add(new CodeComponent(0xFF123456, 0xFFBBBBBB, 10, 10, 10, 0.8F));
     }
 
     @Override

@@ -33,36 +33,22 @@ public class HComponent implements Component {
         if (style == SpanStyle.Simple) {
             return null;
         } else {
-            int level = getLevel(item, start, end);
-            HSpan span = new HSpan(textColor, textSizes[level]);
+            int level = getLevel(item);
+            HSpan span = new HSpan(textColor, textSizes[level - 1]);
             return new SpanInfo(span, start, end);
         }
     }
 
     @Override
     public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end, ReplaceStyle style) {
-        return builder.delete(start, start + getLevel(item, start, end) + 1);
+        return builder.delete(start, start + getLevel(item) + 1);
     }
 
     /**
      * 获取标题等级
      */
-    private int getLevel(String text, int start, int end) {
-        end = Math.min(end - start, 6);
-        String startStr = text.substring(0, end);
-        if (startStr.startsWith("######")) {
-            return 6;
-        } else if (startStr.startsWith("#####")) {
-            return 5;
-        } else if (startStr.startsWith("####")) {
-            return 4;
-        } else if (startStr.startsWith("###")) {
-            return 3;
-        } else if (startStr.startsWith("##")) {
-            return 2;
-        } else {
-            return 1;
-        }
+    private int getLevel(String text) {
+        return text.indexOf(" ");
     }
 
 }
