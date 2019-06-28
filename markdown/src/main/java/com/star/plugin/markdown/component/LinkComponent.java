@@ -33,7 +33,6 @@ public class LinkComponent implements Component {
     private int imageIconId;
     private int imageDesTextSize;
     private int imageDesTextColor;
-    private int urlIconId;
     private int urlTextColor;
     private int urlPressBackgroundColor;
     private int iconSize;
@@ -45,7 +44,6 @@ public class LinkComponent implements Component {
     public LinkComponent(@DrawableRes int imageIconId,
                          int imageDesTextSize,
                          int imageDesTextColor,
-                         @DrawableRes int urlIconId,
                          int urlTextColor,
                          int urlPressBackgroundColor,
                          int iconSize,
@@ -55,7 +53,6 @@ public class LinkComponent implements Component {
         this.imageIconId = imageIconId;
         this.imageDesTextSize = imageDesTextSize;
         this.imageDesTextColor = imageDesTextColor;
-        this.urlIconId = urlIconId;
         this.urlTextColor = urlTextColor;
         this.urlPressBackgroundColor = urlPressBackgroundColor;
         this.iconSize = iconSize;
@@ -76,15 +73,14 @@ public class LinkComponent implements Component {
             if (isImage) {
                 return null;
             } else {
-                return getUrlDisplaySpanInfo(item, start, end);
+                return getUrlSpanInfo(item, start, end);
             }
         } else if (style == SpanStyle.Editing) {
             if (isImage) {
                 LinkEditSpan span = new LinkEditSpan(textView.getResources().getDrawable(imageIconId), iconSize);
                 return new SpanInfo(span, start, end);
             } else {
-                LinkEditSpan span = new LinkEditSpan(textView.getResources().getDrawable(urlIconId), iconSize);
-                return new SpanInfo(span, start, end);
+                return getUrlSpanInfo(item, start, end);
             }
         } else if (style == SpanStyle.Display) {
             if (isImage) {
@@ -104,7 +100,7 @@ public class LinkComponent implements Component {
                 };
                 return new SpanInfo(span, start, end);
             } else {
-                return getUrlDisplaySpanInfo(item, start, end);
+                return getUrlSpanInfo(item, start, end);
             }
         }
         return null;
@@ -137,7 +133,7 @@ public class LinkComponent implements Component {
     }
 
 
-    private SpanInfo getUrlDisplaySpanInfo(String item, int start, int end) {
+    private SpanInfo getUrlSpanInfo(String item, int start, int end) {
         final String url = getUrl(item);
         UrlSpan span = new UrlSpan(urlTextColor, urlPressBackgroundColor) {
             @Override
