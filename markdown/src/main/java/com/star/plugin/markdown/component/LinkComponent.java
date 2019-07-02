@@ -63,7 +63,7 @@ public class LinkComponent implements Component {
 
     @Override
     public String getRegex() {
-        return "!{0,1}\\[.*?\\]\\(.*?\\)";
+        return "!?\\[(((?!\\[).)*)?]\\(.*?\\)";
     }
 
     @Override
@@ -91,7 +91,7 @@ public class LinkComponent implements Component {
                     @Override
                     public void onSpanClick(View view) {
                         ArrayList<String> images = new ArrayList<>();
-                        List<Item> items = MarkDown.getInstance().getItems("!\\[.*?\\]\\(.*?\\)", textView.getText());
+                        List<Item> items = MarkDown.getInstance().getItems("!\\[(((?!\\[).)*)?]\\(.*?\\)", textView.getText());
                         for (Item i : items) {
                             images.add(getUrl(i.getText()));
                         }
