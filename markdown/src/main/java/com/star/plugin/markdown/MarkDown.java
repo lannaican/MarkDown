@@ -57,7 +57,7 @@ public class MarkDown {
     public void loadAsync(final TextView textView, final String text,
                           final SpanStyle spanStyle, final ReplaceStyle replaceStyle,
                           final OnMarkDownListener listener, final Class...components) {
-        if (text.length() == 0) {
+        if (text==null || text.length() == 0) {
             textView.setText(null);
             if (listener != null) {
                 listener.onFinish(text);
