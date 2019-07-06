@@ -32,7 +32,7 @@ public class MentionComponent implements Component {
 
     @Override
     public String getRegex() {
-        return "@[[\\u4e00-\\u9fa5][a-zA-Z]0-9_\\.]{1,12}";
+        return "@[[\\u4e00-\\u9fa5][a-zA-Z]0-9_-\\.]{1,12}";
     }
 
     @Override
