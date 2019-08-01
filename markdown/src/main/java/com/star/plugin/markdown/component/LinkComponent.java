@@ -120,13 +120,13 @@ public class LinkComponent implements Component {
                 if (end == builder.length() || (end < builder.length() && builder.charAt(end) != '\n')) {
                     builder.insert(end, "\n");
                 }
+                if (start > 0 && builder.charAt(start-1) != '\n') {
+                    builder.insert(start, "\n");
+                }
             } else {
                 int nStart = start + item.indexOf("[");
                 int nEnd = start + item.lastIndexOf("]");
                 builder.delete(nEnd, end).delete(start, nStart + 1);
-            }
-            if (start > 0 && builder.charAt(start-1) != '\n') {
-                builder.insert(start, "\n");
             }
             return builder;
         }
