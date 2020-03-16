@@ -38,15 +38,15 @@ public class MarkDownTextView extends AppCompatTextView {
     /**
      * 同步加载
      */
-    public void load(String text, Class[] components) {
-        MarkDown.getInstance().load(this, text, components);
+    public void load(String text, boolean applySpan, Class[] components) {
+        MarkDown.getInstance().load(this, text, applySpan, components);
     }
 
     /**
      * 异步加载
      */
-    public void loadAsync(String text, Class[] components, OnMarkDownListener listener) {
-        MarkDown.getInstance().loadAsync(this, text, components, listener);
+    public void loadAsync(String text, boolean applySpan, Class[] components, OnMarkDownListener listener) {
+        MarkDown.getInstance().loadAsync(this, text, applySpan,components, listener);
     }
 
     @Override

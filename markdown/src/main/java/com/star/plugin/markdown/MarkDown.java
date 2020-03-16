@@ -51,7 +51,8 @@ public class MarkDown {
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("CheckResult")
-    public void loadAsync(final TextView textView, final String text, final Class[] components, final OnMarkDownListener listener) {
+    public void loadAsync(final TextView textView, final String text, final boolean applySpan,
+                          final Class[] components, final OnMarkDownListener listener) {
         if (text==null || text.length() == 0) {
             textView.setText(null);
             if (listener != null) {
@@ -62,7 +63,7 @@ public class MarkDown {
         Observable.fromCallable(new Callable<SpannableStringBuilder>() {
             @Override
             public SpannableStringBuilder call() {
-                return getSpan(textView, text, components);
+                return getSpan(textView, text, applySpan, components);
             }})
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -85,29 +86,31 @@ public class MarkDown {
     /**
      * 同步加载
      */
-    public void load(TextView textView, String text, Class[] useComponents) {
+    public void load(TextView textView, String text, boolean applySpan, Class[] useComponents) {
         if (text == null || text.length() == 0) {
             textView.setText(null);
             return;
         }
-        textView.setText(getSpan(textView, text, useComponents));
+        textView.setText(getSpan(textView, text, applySpan, useComponents));
     }
 
     /**
      * 获取展示Span
      */
-    public SpannableStringBuilder getSpan(TextView textView, String text, Class[] useComponents) {
+    public SpannableStringBuilder getSpan(TextView textView, String text, boolean applySpan, Class[] useComponents) {
         List<Component> components = provider.getComponents();
         SpannableStringBuilder builder = new SpannableStringBuilder(text);
-        for (Component component : components) {
-            if (isInvalidComponent(component, useComponents)) {
-                continue;
-            }
-            List<Item> items = getItems(component.getRegex(), text);
-            for (Item item : items) {
-                SpanInfo info = component.getSpanInfo(textView, item.getText(),
+        if (applySpan) {
+            for (Component component : components) {
+                if (isInvalidComponent(component, useComponents)) {
+                    continue;
+                }
+                List<Item> items = getItems(component.getRegex(), text);
+                for (Item item : items) {
+                    SpanInfo info = component.getSpanInfo(textView, item.getText(),
                             item.getStart(), item.getEnd());
-                MarkDownHelper.setSpan(builder, info);
+                    MarkDownHelper.setSpan(builder, info);
+                }
             }
         }
         int diffCount;
