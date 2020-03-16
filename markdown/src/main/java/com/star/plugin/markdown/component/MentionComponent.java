@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.star.plugin.markdown.listener.OnMentionClickListener;
 import com.star.plugin.markdown.model.SpanInfo;
+import com.star.plugin.markdown.model.SpanType;
 import com.star.plugin.markdown.span.MentionSpan;
 
 /**
@@ -34,7 +35,7 @@ public class MentionComponent implements Component {
     }
 
     @Override
-    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end) {
+    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end, SpanType spanType) {
         final String name = item.substring(1);
         MentionSpan span = new MentionSpan(textColor, pressBackgroundColor) {
             @Override
@@ -46,7 +47,11 @@ public class MentionComponent implements Component {
     }
 
     @Override
-    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end) {
+    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end, SpanType spanType) {
+        if (spanType == SpanType.Simple) {
+            builder.delete(start, start + 1);
+        }
         return builder;
     }
+
 }

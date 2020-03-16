@@ -33,17 +33,7 @@ public class DefaultComponentProvider implements ComponentProvider {
 
     public DefaultComponentProvider() {
         components = new ArrayList<>();
-        components.add(new HComponent(0xFF000000, new float[]{40, 30, 20, 20, 20, 20}));
-        components.add(new CharacterComponent());
-        components.add(new QuoteComponent(20, 5, 0xFFBBBBBB));
-        components.add(new LineComponent(1, 0xFFBBBBBB));
-        components.add(new MentionComponent(0xFFFB7299, 0xFFBBBBBB, new OnMentionClickListener() {
-            @Override
-            public void onClick(String name) {
-
-            }
-        }));
-        components.add(new LinkComponent(2, 0xFF123456, 0xFF123456, 0XFF123456, new OnImageLoadListener() {
+        components.add(new LinkComponent(20, 0xFF123456, 0xFF123456, 0XFF123456, new OnImageLoadListener() {
             @Override
             public Bitmap getBitmap(Context context, String url) {
                 return null;
@@ -56,6 +46,16 @@ public class DefaultComponentProvider implements ComponentProvider {
         }, new OnUrlClickListener() {
             @Override
             public void onClick(String url) {
+
+            }
+        }));
+        components.add(new HComponent(0xFF000000, new float[]{40, 30, 20, 20, 20, 20}));
+        components.add(new CharacterComponent());
+        components.add(new QuoteComponent(20, 5, 0xFFBBBBBB));
+        components.add(new LineComponent(1, 0xFFBBBBBB));
+        components.add(new MentionComponent(0xFFFB7299, 0xFFBBBBBB, new OnMentionClickListener() {
+            @Override
+            public void onClick(String name) {
 
             }
         }));

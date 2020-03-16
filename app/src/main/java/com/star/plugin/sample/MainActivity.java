@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.star.plugin.markdown.MarkDown;
 import com.star.plugin.markdown.MarkDownTextView;
 import com.star.plugin.markdown.component.Component;
+import com.star.plugin.markdown.model.SpanType;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,14 +39,14 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("CheckResult")
             @Override
             public void afterTextChanged(Editable s) {
-                textView.loadAsync(s.toString(), false, null, null);
+                textView.loadAsync(s.toString(), SpanType.Simple, null, null);
             }
         });
 
-        String text="# 测试字符串\n## 标题\n> 引用\n@mention\n+ index\n -index\n普通\n---\n!()[www.baidu.com]";
+        String text="# 测试字符串\n## 标题\n> 引用\n@mention\n+ index\n -index\n普通\n---\n![www.baidu.com](12)";
         for (Component component : new DefaultComponentProvider().getComponents()) {
             long time = System.currentTimeMillis();
-            for (int i=0; i<1; i++) {
+            for (int i=0; i<100; i++) {
                 MarkDown.getInstance().getItems(component.getRegex(), text);
             }
             long now = System.currentTimeMillis() - time;

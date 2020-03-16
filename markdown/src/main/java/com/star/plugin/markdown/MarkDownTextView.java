@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.star.plugin.markdown.listener.OnMarkDownListener;
+import com.star.plugin.markdown.model.SpanType;
 import com.star.plugin.markdown.span.base.ClickableSpan;
 
 /**
@@ -38,15 +39,15 @@ public class MarkDownTextView extends AppCompatTextView {
     /**
      * 同步加载
      */
-    public void load(String text, boolean applySpan, Class[] components) {
-        MarkDown.getInstance().load(this, text, applySpan, components);
+    public void load(String text, SpanType spanType, Class[] components) {
+        MarkDown.getInstance().load(this, text, spanType, components);
     }
 
     /**
      * 异步加载
      */
-    public void loadAsync(String text, boolean applySpan, Class[] components, OnMarkDownListener listener) {
-        MarkDown.getInstance().loadAsync(this, text, applySpan,components, listener);
+    public void loadAsync(String text, SpanType spanType, Class[] components, OnMarkDownListener listener) {
+        MarkDown.getInstance().loadAsync(this, text, spanType,components, listener);
     }
 
     @Override

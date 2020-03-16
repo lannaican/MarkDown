@@ -13,6 +13,7 @@ import com.star.plugin.markdown.listener.OnImageLoadListener;
 import com.star.plugin.markdown.listener.OnUrlClickListener;
 import com.star.plugin.markdown.model.Item;
 import com.star.plugin.markdown.model.SpanInfo;
+import com.star.plugin.markdown.model.SpanType;
 import com.star.plugin.markdown.span.ImageSpan;
 import com.star.plugin.markdown.span.UrlSpan;
 
@@ -57,39 +58,45 @@ public class LinkComponent implements Component {
     }
 
     @Override
-    public SpanInfo getSpanInfo(final TextView textView, String item, int start, int end) {
+    public SpanInfo getSpanInfo(final TextView textView, String item, int start, int end, SpanType spanType) {
         boolean isImage = isImage(item);
-        if (isImage) {
-            String des = getDes(item);
-            final String url = getUrl(item);
-            Bitmap bitmap = imageLoadListener.getBitmap(textView.getContext(), url);
-            ImageSpan span = new ImageSpan(textView, bitmap, des, imageDesTextSize, imageDesTextColor) {
-                @Override
-                public void onSpanClick(View view) {
-                    ArrayList<String> images = new ArrayList<>();
-                    List<Item> items = MarkDown.getInstance().getItems("!\\[(((?!\\[).)*)?]\\(.*?\\)", textView.getText());
-                    for (Item i : items) {
-                        images.add(getUrl(i.getText()));
+        if (spanType == SpanType.Normal) {
+            if (isImage) {
+                String des = getDes(item);
+                final String url = getUrl(item);
+                Bitmap bitmap = imageLoadListener.getBitmap(textView.getContext(), url);
+                ImageSpan span = new ImageSpan(textView, bitmap, des, imageDesTextSize, imageDesTextColor) {
+                    @Override
+                    public void onSpanClick(View view) {
+                        ArrayList<String> images = new ArrayList<>();
+                        List<Item> items = MarkDown.getInstance().getItems("!\\[(((?!\\[).)*)?]\\(.*?\\)", textView.getText());
+                        for (Item i : items) {
+                            images.add(getUrl(i.getText()));
+                        }
+                        imageClickListener.onClick(images, images.indexOf(url));
                     }
-                    imageClickListener.onClick(images, images.indexOf(url));
-                }
-            };
-            return new SpanInfo(span, start, end);
+                };
+                return new SpanInfo(span, start, end);
+            } else {
+                return getUrlSpanInfo(item, start, end);
+            }
         } else {
-            return getUrlSpanInfo(item, start, end);
+            if (isImage) {
+                return null;
+            } else {
+                return getUrlSpanInfo(item, start, end);
+            }
         }
     }
 
     @Override
-    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end) {
+    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end, SpanType spanType) {
         boolean isImage = isImage(item);
         if (isImage) {
-            if (end == builder.length() || (end < builder.length() && builder.charAt(end) != '\n')) {
-                builder.insert(end, "\n");
+            if (end < builder.length() && builder.charAt(end) == '\n') {
+                end++;
             }
-            if (start > 0 && builder.charAt(start-1) != '\n') {
-                builder.insert(start, "\n");
-            }
+            builder.delete(start, end);
         } else {
             int nStart = start + item.indexOf("[");
             int nEnd = start + item.lastIndexOf("]");

@@ -4,6 +4,7 @@ import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
 import com.star.plugin.markdown.model.SpanInfo;
+import com.star.plugin.markdown.model.SpanType;
 import com.star.plugin.markdown.span.LineSpan;
 
 /**
@@ -27,13 +28,13 @@ public class LineComponent implements Component {
     }
 
     @Override
-    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end) {
+    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end, SpanType spanType) {
         LineSpan span = new LineSpan(height, color);
         return new SpanInfo(span, start, end);
     }
 
     @Override
-    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end) {
+    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end, SpanType spanType) {
         return builder;
     }
 
