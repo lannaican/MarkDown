@@ -13,8 +13,6 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.star.plugin.markdown.listener.OnMarkDownListener;
-import com.star.plugin.markdown.model.ReplaceStyle;
-import com.star.plugin.markdown.model.SpanStyle;
 import com.star.plugin.markdown.span.base.ClickableSpan;
 
 /**
@@ -40,16 +38,15 @@ public class MarkDownTextView extends AppCompatTextView {
     /**
      * 同步加载
      */
-    public void load(String text, SpanStyle spanStyle, ReplaceStyle replaceStyle, Class...components) {
-        MarkDown.getInstance().load(this, text, spanStyle, replaceStyle, components);
+    public void load(String text, Class[] components) {
+        MarkDown.getInstance().load(this, text, components);
     }
 
     /**
      * 异步加载
      */
-    public void loadAsync(String text, SpanStyle spanStyle, ReplaceStyle replaceStyle,
-                          OnMarkDownListener listener, Class...components) {
-        MarkDown.getInstance().loadAsync(this, text, spanStyle, replaceStyle, listener, components);
+    public void loadAsync(String text, Class[] components, OnMarkDownListener listener) {
+        MarkDown.getInstance().loadAsync(this, text, components, listener);
     }
 
     @Override

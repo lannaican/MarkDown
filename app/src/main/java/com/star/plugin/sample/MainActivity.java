@@ -1,24 +1,22 @@
 package com.star.plugin.sample;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.star.plugin.markdown.MarkDown;
-import com.star.plugin.markdown.MarkDownEditText;
 import com.star.plugin.markdown.MarkDownTextView;
-import com.star.plugin.markdown.model.ReplaceStyle;
-import com.star.plugin.markdown.model.SpanStyle;
 import com.star.plugin.markdown.component.Component;
 
 public class MainActivity extends AppCompatActivity {
 
     private MarkDownTextView textView;
-    private MarkDownEditText editText;
+    private EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("CheckResult")
             @Override
             public void afterTextChanged(Editable s) {
-                textView.loadAsync(s.toString(), SpanStyle.Display, ReplaceStyle.Display, null);
+                textView.loadAsync(s.toString(), null, null);
             }
         });
 
@@ -53,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             long now = System.currentTimeMillis() - time;
             Log.e("time", component.getClass().getSimpleName() + ":" + now);
         }
-
+        editText.setText(text);
     }
 
 }

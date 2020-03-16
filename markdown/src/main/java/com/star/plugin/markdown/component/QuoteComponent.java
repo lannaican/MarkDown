@@ -3,9 +3,7 @@ package com.star.plugin.markdown.component;
 import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
-import com.star.plugin.markdown.model.ReplaceStyle;
 import com.star.plugin.markdown.model.SpanInfo;
-import com.star.plugin.markdown.model.SpanStyle;
 import com.star.plugin.markdown.span.QuoteSpan;
 
 /**
@@ -31,17 +29,13 @@ public class QuoteComponent implements Component {
     }
 
     @Override
-    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end, SpanStyle style) {
-        if (style == SpanStyle.Simple) {
-            return null;
-        } else {
-            QuoteSpan span = new QuoteSpan(gapWidth, lineWidth, lineColor);
-            return new SpanInfo(span, start, end);
-        }
+    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end) {
+        QuoteSpan span = new QuoteSpan(gapWidth, lineWidth, lineColor);
+        return new SpanInfo(span, start, end);
     }
 
     @Override
-    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end, ReplaceStyle style) {
+    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end) {
         return builder.delete(start, start + 2);
     }
 

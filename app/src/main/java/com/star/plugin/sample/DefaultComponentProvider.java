@@ -1,16 +1,23 @@
 package com.star.plugin.sample;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+
 import com.star.plugin.markdown.component.CharacterComponent;
 import com.star.plugin.markdown.component.CodeComponent;
 import com.star.plugin.markdown.component.Component;
 import com.star.plugin.markdown.component.HComponent;
 import com.star.plugin.markdown.component.IndexComponent;
 import com.star.plugin.markdown.component.LineComponent;
+import com.star.plugin.markdown.component.LinkComponent;
 import com.star.plugin.markdown.component.MentionComponent;
 import com.star.plugin.markdown.component.QuoteComponent;
 import com.star.plugin.markdown.component.StrikethroughComponent;
 import com.star.plugin.markdown.component.provider.ComponentProvider;
+import com.star.plugin.markdown.listener.OnImageClickListener;
+import com.star.plugin.markdown.listener.OnImageLoadListener;
 import com.star.plugin.markdown.listener.OnMentionClickListener;
+import com.star.plugin.markdown.listener.OnUrlClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +37,25 @@ public class DefaultComponentProvider implements ComponentProvider {
         components.add(new CharacterComponent());
         components.add(new QuoteComponent(20, 5, 0xFFBBBBBB));
         components.add(new LineComponent(1, 0xFFBBBBBB));
-//        components.add(new LinkComponent());
         components.add(new MentionComponent(0xFFFB7299, 0xFFBBBBBB, new OnMentionClickListener() {
             @Override
             public void onClick(String name) {
+
+            }
+        }));
+        components.add(new LinkComponent(2, 0xFF123456, 0xFF123456, 0XFF123456, new OnImageLoadListener() {
+            @Override
+            public Bitmap getBitmap(Context context, String url) {
+                return null;
+            }
+        }, new OnImageClickListener() {
+            @Override
+            public void onClick(ArrayList<String> images, int index) {
+
+            }
+        }, new OnUrlClickListener() {
+            @Override
+            public void onClick(String url) {
 
             }
         }));

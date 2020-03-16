@@ -3,9 +3,7 @@ package com.star.plugin.markdown.component;
 import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
-import com.star.plugin.markdown.model.ReplaceStyle;
 import com.star.plugin.markdown.model.SpanInfo;
-import com.star.plugin.markdown.model.SpanStyle;
 import com.star.plugin.markdown.span.IndexSpan;
 
 /**
@@ -27,19 +25,19 @@ public class IndexComponent implements Component {
     }
 
     @Override
-    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end, SpanStyle style) {
+    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end) {
         boolean startWithLine = startWithLine(item);
         if (startWithLine) {
             item = item.substring(1);
             start++;
         }
         int type = getType(item);
-        IndexSpan span = new IndexSpan(type, paddingLeft, style != SpanStyle.Editing);
+        IndexSpan span = new IndexSpan(type, paddingLeft);
         return new SpanInfo(span, start, end);
     }
 
     @Override
-    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end, ReplaceStyle style) {
+    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end) {
         boolean startWithLine = startWithLine(item);
         if (startWithLine) {
             start++;

@@ -3,9 +3,7 @@ package com.star.plugin.markdown.component;
 import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
-import com.star.plugin.markdown.model.ReplaceStyle;
 import com.star.plugin.markdown.model.SpanInfo;
-import com.star.plugin.markdown.model.SpanStyle;
 import com.star.plugin.markdown.span.CharacterSpan;
 
 /**
@@ -21,25 +19,15 @@ public class CharacterComponent implements Component {
     }
 
     @Override
-    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end, SpanStyle style) {
-        if (style == SpanStyle.Simple) {
-            return null;
-        } else {
-            return new SpanInfo(new CharacterSpan(getType(item)), start, end);
-        }
+    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end) {
+        return new SpanInfo(new CharacterSpan(getType(item)), start, end);
     }
 
     @Override
-    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end, ReplaceStyle style) {
+    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end) {
         int type = getType(item);
-        if (style == ReplaceStyle.Display) {
-            return builder.delete(end - type, end)
-                    .delete(start, start + type);
-        } else if (style == ReplaceStyle.Origin) {
-            return builder.delete(end - type, end)
-                    .delete(start, start + type);
-        }
-        return null;
+        return builder.delete(end - type, end)
+                .delete(start, start + type);
     }
 
 

@@ -1,7 +1,6 @@
 package com.star.plugin.markdown;
 
 import android.annotation.SuppressLint;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
@@ -9,9 +8,7 @@ import com.star.plugin.markdown.component.Component;
 import com.star.plugin.markdown.component.provider.ComponentProvider;
 import com.star.plugin.markdown.listener.OnMarkDownListener;
 import com.star.plugin.markdown.model.Item;
-import com.star.plugin.markdown.model.ReplaceStyle;
 import com.star.plugin.markdown.model.SpanInfo;
-import com.star.plugin.markdown.model.SpanStyle;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -54,9 +51,7 @@ public class MarkDown {
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("CheckResult")
-    public void loadAsync(final TextView textView, final String text,
-                          final SpanStyle spanStyle, final ReplaceStyle replaceStyle,
-                          final OnMarkDownListener listener, final Class...components) {
+    public void loadAsync(final TextView textView, final String text, final Class[] components, final OnMarkDownListener listener) {
         if (text==null || text.length() == 0) {
             textView.setText(null);
             if (listener != null) {
@@ -67,7 +62,7 @@ public class MarkDown {
         Observable.fromCallable(new Callable<SpannableStringBuilder>() {
             @Override
             public SpannableStringBuilder call() {
-                return getSpan(textView, text, spanStyle, replaceStyle, components);
+                return getSpan(textView, text, components);
             }})
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -90,38 +85,18 @@ public class MarkDown {
     /**
      * 同步加载
      */
-    public void load(TextView textView, String text, SpanStyle style, ReplaceStyle replaceStyle, Class...useComponents) {
+    public void load(TextView textView, String text, Class[] useComponents) {
         if (text == null || text.length() == 0) {
             textView.setText(null);
             return;
         }
-        textView.setText(getSpan(textView, text, style, replaceStyle, useComponents));
-    }
-
-    /**
-     * 编辑模式设置样式
-     */
-    public void set(TextView textView, Spannable spannable, Class...useComponents) {
-        MarkDownHelper.clearSpan(spannable);
-        List<Component> components = provider.getComponents();
-        for (Component component : components) {
-            if (isInvalidComponent(component, useComponents)) {
-                continue;
-            }
-            List<Item> items = getItems(component.getRegex(), spannable);
-            for (Item item : items) {
-                SpanInfo info = component.getSpanInfo(textView, item.getText(),
-                        item.getStart(), item.getEnd(), SpanStyle.Editing);
-                MarkDownHelper.setSpan(spannable, info);
-            }
-        }
+        textView.setText(getSpan(textView, text, useComponents));
     }
 
     /**
      * 获取展示Span
      */
-    public SpannableStringBuilder getSpan(TextView textView, String text, SpanStyle spanStyle,
-                                                 ReplaceStyle replaceStyle, Class...useComponents) {
+    public SpannableStringBuilder getSpan(TextView textView, String text, Class[] useComponents) {
         List<Component> components = provider.getComponents();
         SpannableStringBuilder builder = new SpannableStringBuilder(text);
         for (Component component : components) {
@@ -131,7 +106,7 @@ public class MarkDown {
             List<Item> items = getItems(component.getRegex(), text);
             for (Item item : items) {
                 SpanInfo info = component.getSpanInfo(textView, item.getText(),
-                        item.getStart(), item.getEnd(), spanStyle);
+                            item.getStart(), item.getEnd());
                 MarkDownHelper.setSpan(builder, info);
             }
         }
@@ -148,7 +123,7 @@ public class MarkDown {
                 item.setEnd(item.getEnd() - diffLength);
                 SpannableStringBuilder newBuilder;
                 newBuilder = component.replaceText(builder, item.getText(),
-                        item.getStart(), item.getEnd(), replaceStyle);
+                        item.getStart(), item.getEnd());
                 diffLength = text.length() - diffCount - newBuilder.length();
                 builder = newBuilder;
             }
@@ -189,7 +164,7 @@ public class MarkDown {
     /**
      * 判断类型无效
      */
-    private boolean isInvalidComponent(Component component, Class...useComponents) {
+    private boolean isInvalidComponent(Component component, Class[] useComponents) {
         if (useComponents == null || useComponents.length == 0) {
             return false;
         }

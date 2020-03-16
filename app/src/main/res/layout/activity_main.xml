@@ -26,7 +26,7 @@
         android:layout_height="1dp"
         android:background="#E3E3E3" />
 
-    <com.star.plugin.markdown.MarkDownEditText
+    <EditText
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="0dp"
