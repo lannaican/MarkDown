@@ -92,17 +92,27 @@ public class LinkComponent implements Component {
     @Override
     public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end, SpanType spanType) {
         boolean isImage = isImage(item);
-        if (isImage) {
+        if (isImage && spanType == SpanType.Simple) {
             if (end < builder.length() && builder.charAt(end) == '\n') {
                 end++;
             }
             builder.delete(start, end);
+            return builder;
         } else {
-            int nStart = start + item.indexOf("[");
-            int nEnd = start + item.lastIndexOf("]");
-            builder.delete(nEnd, end).delete(start, nStart + 1);
+            if (isImage) {
+                if (end == builder.length() || (end < builder.length() && builder.charAt(end) != '\n')) {
+                    builder.insert(end, "\n");
+                }
+                if (start > 0 && builder.charAt(start-1) != '\n') {
+                    builder.insert(start, "\n");
+                }
+            } else {
+                int nStart = start + item.indexOf("[");
+                int nEnd = start + item.lastIndexOf("]");
+                builder.delete(nEnd, end).delete(start, nStart + 1);
+            }
+            return builder;
         }
-        return builder;
     }
 
 

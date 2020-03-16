@@ -2,6 +2,7 @@ package com.star.plugin.sample;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.star.plugin.markdown.component.CharacterComponent;
 import com.star.plugin.markdown.component.CodeComponent;
@@ -33,10 +34,11 @@ public class DefaultComponentProvider implements ComponentProvider {
 
     public DefaultComponentProvider() {
         components = new ArrayList<>();
-        components.add(new LinkComponent(20, 0xFF123456, 0xFF123456, 0XFF123456, new OnImageLoadListener() {
+        components.add(new LinkComponent(20, 0xFF123456, 0xFF123456, 0XFF123456,
+                new OnImageLoadListener() {
             @Override
             public Bitmap getBitmap(Context context, String url) {
-                return null;
+                return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher_round);
             }
         }, new OnImageClickListener() {
             @Override
