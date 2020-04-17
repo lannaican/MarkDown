@@ -11,6 +11,9 @@ import java.util.List;
  */
 public interface ComponentProvider {
 
+    /**
+     * 代码块必须放最前面
+     */
     List<Component> getComponents();
 
 }

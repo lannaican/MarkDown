@@ -48,9 +48,6 @@ public class MentionComponent implements Component {
 
     @Override
     public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end, SpanType spanType) {
-        if (spanType == SpanType.Simple) {
-            builder.delete(start, start + 1);
-        }
         return builder;
     }
 
