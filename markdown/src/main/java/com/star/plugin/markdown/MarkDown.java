@@ -2,6 +2,7 @@ package com.star.plugin.markdown;
 
 import android.annotation.SuppressLint;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.star.plugin.markdown.component.Component;
@@ -99,6 +100,9 @@ public class MarkDown {
      * 获取展示Span
      */
     public SpannableStringBuilder getSpan(TextView textView, String text, SpanType spanType, Class[] useComponents) {
+        if (TextUtils.isEmpty(text)) {
+            return new SpannableStringBuilder();
+        }
         List<Component> components = provider.getComponents();
         SpannableStringBuilder builder = new SpannableStringBuilder(text);
         for (Component component : components) {
