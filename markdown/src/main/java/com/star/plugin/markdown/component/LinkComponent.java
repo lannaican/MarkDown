@@ -64,7 +64,7 @@ public class LinkComponent implements Component {
             if (isImage) {
                 String des = getDes(item);
                 final String url = getUrl(item);
-                Bitmap bitmap = imageLoadListener.getBitmap(textView.getContext(), url);
+                Bitmap bitmap = imageLoadListener.getBitmap(textView, textView.getContext(), url);
                 ImageSpan span = new ImageSpan(textView, bitmap, des, imageDesTextSize, imageDesTextColor) {
                     @Override
                     public void onSpanClick(View view) {
