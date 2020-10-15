@@ -72,15 +72,10 @@ public class MarkDown {
                 .subscribe(new Consumer<SpannableStringBuilder>() {
                     @Override
                     public void accept(final SpannableStringBuilder builder) {
-                        textView.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                textView.setText(builder, TextView.BufferType.SPANNABLE);
-                                if (listener != null) {
-                                    listener.onFinish(text);
-                                }
-                            }
-                        }, 50);
+                        textView.setText(builder, TextView.BufferType.SPANNABLE);
+                        if (listener != null) {
+                            listener.onFinish(text);
+                        }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
