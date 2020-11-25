@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        String text="# 测试字符串\n## 标题\n> 引用\n@mention\n+ index\n -index\n普通\n---\n![www.baidu.com](12)";
+        String text="# 测试字符串\n## 标题 \n`123` \n> 引用\n@mention\n+ index\n -index\n普通\n---\n![www.baidu.com](12)";
         for (Component component : new DefaultComponentProvider().getComponents()) {
             long time = System.currentTimeMillis();
             for (int i=0; i<100; i++) {

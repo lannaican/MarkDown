@@ -38,7 +38,7 @@ public class CodeSpan extends ReplacementSpan implements MarkDownSpan {
 
     @Override
     public int getSize(Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fm) {
-        height = paint.getFontMetricsInt().descent - paint.getFontMetricsInt().ascent;
+        height = paint.getFontMetricsInt().descent - paint.getFontMetricsInt().ascent + padding / 2;
 
         float size = paint.getTextSize();
         paint.setTextSize(size * fontScale);
@@ -54,7 +54,7 @@ public class CodeSpan extends ReplacementSpan implements MarkDownSpan {
         float size = paint.getTextSize();
         paint.setTextSize(size * fontScale);
 
-        background.setBounds((int) (x + margin), top, (int) (x + width - margin), top + height);
+        background.setBounds((int) (x + margin), top - padding / 2, (int) (x + width - margin), top + height);
         background.draw(canvas);
 
         int color = paint.getColor();
