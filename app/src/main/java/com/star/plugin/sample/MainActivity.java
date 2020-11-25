@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("CheckResult")
             @Override
             public void afterTextChanged(Editable s) {
-                textView.loadAsync(s.toString(), SpanType.Simple, null, null);
+                textView.loadAsync(s.toString(), SpanType.Normal, null, null);
             }
         });
 

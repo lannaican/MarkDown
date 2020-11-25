@@ -59,8 +59,8 @@ public class CodeSpan extends ReplacementSpan implements MarkDownSpan {
 
         int color = paint.getColor();
         paint.setColor(textColor);
-        canvas.drawText(text, start, end, x + margin + padding,
-                top + (paint.descent() - paint.ascent()), paint);
+        canvas.drawText(text, start, end, x + margin + padding, y, paint);
         paint.setColor(color);
+        paint.setTextSize(size);
     }
 }

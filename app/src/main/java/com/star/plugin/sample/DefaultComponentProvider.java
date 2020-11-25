@@ -35,7 +35,7 @@ public class DefaultComponentProvider implements ComponentProvider {
 
     public DefaultComponentProvider() {
         components = new ArrayList<>();
-        components.add(new CodeComponent(0xFF123456, 0xFFBBBBBB, 10, 10, 10, 0.8F));
+        components.add(new CodeComponent(0xFF123456, 0xFFBBBBBB, 10, 10, 10, 0.9F));
         components.add(new LinkComponent(20, 0xFF123456, 0xFF123456, 0XFF123456,
                 new OnImageLoadListener() {
             @Override
