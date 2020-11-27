@@ -54,7 +54,10 @@ public class CodeSpan extends ReplacementSpan implements MarkDownSpan {
         float size = paint.getTextSize();
         paint.setTextSize(size * fontScale);
 
-        background.setBounds((int) (x + margin), top - padding / 2, (int) (x + width - margin), top + height);
+        Paint.FontMetrics fm = paint.getFontMetrics();
+        int drawY = y - (int)(fm.descent - fm.ascent);
+
+        background.setBounds((int) (x + margin), drawY, (int) (x + width - margin), drawY + height);
         background.draw(canvas);
 
         int color = paint.getColor();

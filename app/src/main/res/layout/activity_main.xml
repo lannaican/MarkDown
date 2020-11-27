@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:lineSpacingMultiplier="1.6"
             android:padding="10dp"
-            android:textSize="13sp"/>
+            android:textSize="17sp"/>
 
     </ScrollView>
 
