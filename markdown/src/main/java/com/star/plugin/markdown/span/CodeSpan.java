@@ -9,9 +9,7 @@ import android.text.style.ReplacementSpan;
 import com.star.plugin.markdown.span.base.MarkDownSpan;
 
 /**
- * Detail：
- * Author：Stars
- * Create Time：2019/6/14 14:27
+ * 代码片段
  */
 public class CodeSpan extends ReplacementSpan implements MarkDownSpan {
 
