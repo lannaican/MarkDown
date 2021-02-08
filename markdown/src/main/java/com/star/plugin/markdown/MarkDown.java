@@ -12,10 +12,8 @@ import com.star.plugin.markdown.model.Item;
 import com.star.plugin.markdown.model.SpanInfo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -105,23 +103,15 @@ public class MarkDown {
         }
         List<Component> components = provider.getComponents(scene);
         SpannableStringBuilder builder = new SpannableStringBuilder(text);
-        Map<Component, List<Item>> cache = new HashMap<>();
+        int diffCount;
         for (Component component : components) {
-            List<Item> items = getItems(component.getRegex(), text);
+            List<Item> items = getItems(component.getRegex(), builder);
             if (items == null || items.isEmpty()) {
                 continue;
             }
-            cache.put(component, items);
             for (Item item : items) {
                 SpanInfo info = component.getSpanInfo(textView, item.text, item.start, item.end);
                 MarkDownHelper.setSpan(builder, info);
-            }
-        }
-        int diffCount;
-        for (Component component : components) {
-            List<Item> items = cache.get(component);
-            if (items == null) {
-                continue;
             }
             diffCount = text.length() - builder.length();
             int diffLength = 0;
