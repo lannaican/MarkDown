@@ -4,13 +4,11 @@ import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
 import com.star.plugin.markdown.model.SpanInfo;
-import com.star.plugin.markdown.model.SpanType;
 import com.star.plugin.markdown.span.IndexSpan;
 
 /**
- * Detail：
- * Author：Stars
- * Create Time：2019/4/16 6:46
+ * 序号
+ * - . +
  */
 public class IndexComponent implements Component {
 
@@ -26,7 +24,7 @@ public class IndexComponent implements Component {
     }
 
     @Override
-    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end, SpanType spanType) {
+    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end) {
         boolean startWithLine = startWithLine(item);
         if (startWithLine) {
             item = item.substring(1);
@@ -38,7 +36,7 @@ public class IndexComponent implements Component {
     }
 
     @Override
-    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end, SpanType spanType) {
+    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end) {
         boolean startWithLine = startWithLine(item);
         if (startWithLine) {
             start++;

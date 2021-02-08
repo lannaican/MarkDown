@@ -4,16 +4,11 @@ import com.star.plugin.markdown.component.Component;
 
 import java.util.List;
 
-/**
- * Detail：
- * Author：Stars
- * Create Time：2019/5/7 9:28
- */
 public interface ComponentProvider {
 
     /**
-     * 代码块必须放最前面
+     * 根据场景获取转换组件
      */
-    List<Component> getComponents();
+    List<Component> getComponents(int scene);
 
 }

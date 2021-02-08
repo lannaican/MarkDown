@@ -4,13 +4,11 @@ import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
 import com.star.plugin.markdown.model.SpanInfo;
-import com.star.plugin.markdown.model.SpanType;
 import com.star.plugin.markdown.span.QuoteSpan;
 
 /**
- * Detail：
- * Author：Stars
- * Create Time：2019/4/16 6:46
+ * 引用
+ * >
  */
 public class QuoteComponent implements Component {
 
@@ -32,16 +30,13 @@ public class QuoteComponent implements Component {
     }
 
     @Override
-    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end, SpanType spanType) {
-        if (spanType == SpanType.Normal) {
-            QuoteSpan span = new QuoteSpan(gapWidth, lineWidth, textColor, lineColor);
-            return new SpanInfo(span, start, end);
-        }
-        return null;
+    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end) {
+        QuoteSpan span = new QuoteSpan(gapWidth, lineWidth, textColor, lineColor);
+        return new SpanInfo(span, start, end);
     }
 
     @Override
-    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end, SpanType spanType) {
+    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end) {
         return builder.delete(start, start + 2);
     }
 

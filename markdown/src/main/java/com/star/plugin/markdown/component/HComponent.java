@@ -4,13 +4,11 @@ import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
 import com.star.plugin.markdown.model.SpanInfo;
-import com.star.plugin.markdown.model.SpanType;
 import com.star.plugin.markdown.span.HSpan;
 
 /**
- * Detail：H1 - H6
- * Author：Stars
- * Create Time：2019/4/16 6:46
+ * H1 - H6
+ * # - ######
  */
 public class HComponent implements Component {
 
@@ -28,17 +26,14 @@ public class HComponent implements Component {
     }
 
     @Override
-    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end, SpanType spanType) {
-        if (spanType == SpanType.Normal) {
-            int level = getLevel(item);
-            HSpan span = new HSpan(textColor, textSizes[level - 1]);
-            return new SpanInfo(span, start, end);
-        }
-        return null;
+    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end) {
+        int level = getLevel(item);
+        HSpan span = new HSpan(textColor, textSizes[level - 1]);
+        return new SpanInfo(span, start, end);
     }
 
     @Override
-    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end, SpanType spanType) {
+    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end) {
         return builder.delete(start, start + getLevel(item) + 1);
     }
 

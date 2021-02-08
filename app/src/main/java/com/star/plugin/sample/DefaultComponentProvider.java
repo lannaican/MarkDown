@@ -68,7 +68,7 @@ public class DefaultComponentProvider implements ComponentProvider {
     }
 
     @Override
-    public List<Component> getComponents() {
+    public List<Component> getComponents(int scene) {
         return components;
     }
 }

@@ -10,11 +10,12 @@ import com.star.plugin.markdown.component.provider.ComponentProvider;
 import com.star.plugin.markdown.listener.OnMarkDownListener;
 import com.star.plugin.markdown.model.Item;
 import com.star.plugin.markdown.model.SpanInfo;
-import com.star.plugin.markdown.model.SpanType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,8 +54,7 @@ public class MarkDown {
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("CheckResult")
-    public void loadAsync(final TextView textView, final String text, final SpanType spanType,
-                          final Class[] components, final OnMarkDownListener listener) {
+    public void loadAsync(final TextView textView, final String text, final int scene, final OnMarkDownListener listener) {
         if (text==null || text.length() == 0) {
             textView.setText(null);
             if (listener != null) {
@@ -65,7 +65,7 @@ public class MarkDown {
         Observable.fromCallable(new Callable<SpannableStringBuilder>() {
             @Override
             public SpannableStringBuilder call() {
-                return getSpan(textView, text, spanType, components);
+                return getSpan(textView, text, scene);
             }})
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -88,48 +88,48 @@ public class MarkDown {
     /**
      * 同步加载
      */
-    public void load(TextView textView, String text, SpanType spanType, Class[] useComponents) {
+    public void load(TextView textView, String text, int scene) {
         if (text == null || text.length() == 0) {
             textView.setText(null);
             return;
         }
-        textView.setText(getSpan(textView, text, spanType, useComponents));
+        textView.setText(getSpan(textView, text, scene));
     }
 
     /**
      * 获取展示Span
      */
-    public SpannableStringBuilder getSpan(TextView textView, String text, SpanType spanType, Class[] useComponents) {
+    public SpannableStringBuilder getSpan(TextView textView, String text, int scene) {
         if (TextUtils.isEmpty(text)) {
             return new SpannableStringBuilder();
         }
-        List<Component> components = provider.getComponents();
+        List<Component> components = provider.getComponents(scene);
         SpannableStringBuilder builder = new SpannableStringBuilder(text);
+        Map<Component, List<Item>> cache = new HashMap<>();
         for (Component component : components) {
-            if (isInvalidComponent(component, useComponents)) {
+            List<Item> items = getItems(component.getRegex(), text);
+            if (items == null || items.isEmpty()) {
                 continue;
             }
-            List<Item> items = getItems(component.getRegex(), text);
+            cache.put(component, items);
             for (Item item : items) {
-                SpanInfo info = component.getSpanInfo(textView, item.getText(),
-                        item.getStart(), item.getEnd(), spanType);
+                SpanInfo info = component.getSpanInfo(textView, item.text, item.start, item.end);
                 MarkDownHelper.setSpan(builder, info);
             }
         }
         int diffCount;
         for (Component component : components) {
-            if (isInvalidComponent(component, useComponents)) {
+            List<Item> items = cache.get(component);
+            if (items == null) {
                 continue;
             }
-            List<Item> items = getItems(component.getRegex(), builder);
             diffCount = text.length() - builder.length();
             int diffLength = 0;
             for (Item item : items) {
-                item.setStart(item.getStart() - diffLength);
-                item.setEnd(item.getEnd() - diffLength);
+                item.start = item.start - diffLength;
+                item.end = item.end - diffLength;
                 SpannableStringBuilder newBuilder;
-                newBuilder = component.replaceText(builder, item.getText(),
-                        item.getStart(), item.getEnd(), spanType);
+                newBuilder = component.replaceText(builder, item.text, item.start, item.end);
                 diffLength = text.length() - diffCount - newBuilder.length();
                 builder = newBuilder;
             }
@@ -144,7 +144,7 @@ public class MarkDown {
         ArrayList<String> strings = new ArrayList<>();
         List<Item> items = getItems(regex, text);
         for (Item item : items) {
-            strings.add(item.getText());
+            strings.add(item.text);
         }
         return strings;
     }
@@ -158,27 +158,13 @@ public class MarkDown {
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             Item item = new Item(matcher.start(), matcher.end(), matcher.group());
-            if (item.getText().startsWith("\n")) {  //针对首字符换行处理
-                item.setText(item.getText().substring(1));
-                item.setStart(item.getStart() + 1);
+            if (item.text.startsWith("\n")) {  //针对首字符换行处理
+                item.text = item.text.substring(1);
+                item.start = item.start + 1;
             }
             items.add(item);
         }
         return items;
     }
 
-    /**
-     * 判断类型无效
-     */
-    private boolean isInvalidComponent(Component component, Class[] useComponents) {
-        if (useComponents == null || useComponents.length == 0) {
-            return false;
-        }
-        for (Class cls : useComponents) {
-            if (component.getClass() == cls) {
-                return false;
-            }
-        }
-        return true;
-    }
 }

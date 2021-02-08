@@ -4,13 +4,11 @@ import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
 import com.star.plugin.markdown.model.SpanInfo;
-import com.star.plugin.markdown.model.SpanType;
 import com.star.plugin.markdown.span.CodeSpan;
 
 /**
- * Detail：分割线
- * Author：Stars
- * Create Time：2019/4/16 9:01
+ * 代码块
+ * ``
  */
 public class CodeComponent implements Component {
 
@@ -36,16 +34,13 @@ public class CodeComponent implements Component {
     }
 
     @Override
-    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end, SpanType spanType) {
-        if (spanType == SpanType.Normal) {
-            CodeSpan span = new CodeSpan(textColor, backgroundColor, padding, margin, radius, fontScale);
-            return new SpanInfo(span, start, end);
-        }
-        return null;
+    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end) {
+        CodeSpan span = new CodeSpan(textColor, backgroundColor, padding, margin, radius, fontScale);
+        return new SpanInfo(span, start, end);
     }
 
     @Override
-    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end, SpanType spanType) {
+    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end) {
         return builder.delete(end - 1, end).delete(start, start + 1);
     }
 

@@ -4,13 +4,11 @@ import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
 import com.star.plugin.markdown.model.SpanInfo;
-import com.star.plugin.markdown.model.SpanType;
 import com.star.plugin.markdown.span.LineSpan;
 
 /**
- * Detail：分割线
- * Author：Stars
- * Create Time：2019/4/16 9:01
+ * 分割线
+ * ---
  */
 public class LineComponent implements Component {
 
@@ -28,13 +26,13 @@ public class LineComponent implements Component {
     }
 
     @Override
-    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end, SpanType spanType) {
+    public SpanInfo getSpanInfo(TextView textView, String item, int start, int end) {
         LineSpan span = new LineSpan(height, color);
         return new SpanInfo(span, start, end);
     }
 
     @Override
-    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end, SpanType spanType) {
+    public SpannableStringBuilder replaceText(SpannableStringBuilder builder, String item, int start, int end) {
         return builder;
     }
 
