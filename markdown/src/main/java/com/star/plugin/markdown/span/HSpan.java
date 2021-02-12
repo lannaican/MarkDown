@@ -39,9 +39,9 @@ public class HSpan extends MetricAffectingSpan implements LineHeightSpan, MarkDo
     @Override
     public void chooseHeight(CharSequence charSequence, int i, int i1, int i2, int i3, Paint.FontMetricsInt fontMetricsInt) {
         int lineOffset = (int)(size / 2);
-        fontMetricsInt.ascent = fontMetricsInt.ascent - lineOffset;
-        fontMetricsInt.descent = fontMetricsInt.descent + lineOffset;
-        fontMetricsInt.top = fontMetricsInt.top - lineOffset;
-        fontMetricsInt.bottom = fontMetricsInt.bottom + lineOffset;
+        fontMetricsInt.ascent = fontMetricsInt.ascent + lineOffset;
+//        fontMetricsInt.descent = fontMetricsInt.descent + lineOffset;
+//        fontMetricsInt.top = fontMetricsInt.top - lineOffset;
+//        fontMetricsInt.bottom = fontMetricsInt.bottom + lineOffset;
     }
 }
