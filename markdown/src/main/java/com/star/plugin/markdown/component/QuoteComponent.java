@@ -13,12 +13,14 @@ import com.star.plugin.markdown.span.QuoteSpan;
 public class QuoteComponent implements Component {
 
     private int gapWidth;
+    private int lineOffset;
     private int lineWidth;
     private int textColor;
     private int lineColor;
 
-    public QuoteComponent(int gapWidth, int lineWidth, int textColor, int lineColor) {
+    public QuoteComponent(int gapWidth, int lineOffset, int lineWidth, int textColor, int lineColor) {
         this.gapWidth = gapWidth;
+        this.lineOffset = lineOffset;
         this.lineWidth = lineWidth;
         this.textColor = textColor;
         this.lineColor = lineColor;
@@ -31,7 +33,7 @@ public class QuoteComponent implements Component {
 
     @Override
     public SpanInfo getSpanInfo(TextView textView, String item, int start, int end) {
-        QuoteSpan span = new QuoteSpan(gapWidth, lineWidth, textColor, lineColor);
+        QuoteSpan span = new QuoteSpan(gapWidth, lineOffset, lineWidth, textColor, lineColor);
         return new SpanInfo(span, start, end);
     }
 

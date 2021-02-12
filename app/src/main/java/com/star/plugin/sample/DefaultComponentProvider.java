@@ -55,7 +55,7 @@ public class DefaultComponentProvider implements ComponentProvider {
         }));
         components.add(new HComponent(0xFF000000, new float[]{40, 20, 10, 50, 40, 30}));
         components.add(new CharacterComponent());
-        components.add(new QuoteComponent(30, 8, 0xFF666666, 0xFFDDDDDD));
+        components.add(new QuoteComponent(30, 0, 8, 0xFF666666, 0xFFDDDDDD));
         components.add(new LineComponent(1, 0xFFBBBBBB));
         components.add(new MentionComponent(0xFFFB7299, 0xFFBBBBBB, new OnMentionClickListener() {
             @Override

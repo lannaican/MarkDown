@@ -20,13 +20,15 @@ import com.star.plugin.markdown.span.base.MarkDownSpan;
 public class QuoteSpan extends ForegroundColorSpan implements LeadingMarginSpan, LineHeightSpan, MarkDownSpan {
 
     private int gapWidth;
+    private int lineOffset;
     private int lineWidth;
     private int textColor;
     private int lineColor;
 
-    public QuoteSpan(int gapWidth, int lineWidth, int textColor, int lineColor) {
+    public QuoteSpan(int gapWidth, int lineOffset, int lineWidth, int textColor, int lineColor) {
         super(textColor);
         this.gapWidth = gapWidth;
+        this.lineOffset = lineOffset;
         this.lineWidth = lineWidth;
         this.textColor = textColor;
         this.lineColor = lineColor;
@@ -61,10 +63,6 @@ public class QuoteSpan extends ForegroundColorSpan implements LeadingMarginSpan,
 
     @Override
     public void chooseHeight(CharSequence charSequence, int i, int i1, int i2, int i3, Paint.FontMetricsInt fontMetricsInt) {
-        int lineOffset = ((fontMetricsInt.bottom - fontMetricsInt.top) / 2);
         fontMetricsInt.ascent = fontMetricsInt.ascent - lineOffset;
-        fontMetricsInt.descent = fontMetricsInt.descent + lineOffset;
-        fontMetricsInt.top = fontMetricsInt.top - lineOffset;
-        fontMetricsInt.bottom = fontMetricsInt.bottom + lineOffset;
     }
 }
