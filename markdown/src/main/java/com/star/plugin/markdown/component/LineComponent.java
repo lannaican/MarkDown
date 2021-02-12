@@ -22,7 +22,7 @@ public class LineComponent implements Component {
 
     @Override
     public String getRegex() {
-        return "(^|\\n)-{3,}\\n{1}";
+        return "(^|\\n)-{3,}";
     }
 
     @Override
