@@ -36,7 +36,7 @@ public class MarkDownHelper {
      * 设置Span
      */
     public static void setSpan(Spannable spannable, Object span, int start, int end) {
-        spannable.setSpan(span, start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        spannable.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
 }
