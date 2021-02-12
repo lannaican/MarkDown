@@ -1,20 +1,18 @@
 package com.star.plugin.markdown.span;
 
-import android.graphics.Paint;
 import android.text.TextPaint;
-import android.text.style.LineHeightSpan;
 import android.text.style.MetricAffectingSpan;
 
-import com.star.plugin.markdown.span.base.MarkDownSpan;
-
 import androidx.annotation.NonNull;
+
+import com.star.plugin.markdown.span.base.MarkDownSpan;
 
 /**
  * Detail：
  * Author：Stars
  * Create Time：2019/4/16 8:11
  */
-public class HSpan extends MetricAffectingSpan implements LineHeightSpan, MarkDownSpan {
+public class HSpan extends MetricAffectingSpan implements MarkDownSpan {
 
     private int color;
     private float size;
@@ -36,12 +34,4 @@ public class HSpan extends MetricAffectingSpan implements LineHeightSpan, MarkDo
         tp.setTextSize(size);
     }
 
-    @Override
-    public void chooseHeight(CharSequence charSequence, int i, int i1, int i2, int i3, Paint.FontMetricsInt fontMetricsInt) {
-        int lineOffset = (int)(size / 2);
-        fontMetricsInt.ascent = fontMetricsInt.ascent + lineOffset;
-//        fontMetricsInt.descent = fontMetricsInt.descent + lineOffset;
-//        fontMetricsInt.top = fontMetricsInt.top - lineOffset;
-//        fontMetricsInt.bottom = fontMetricsInt.bottom + lineOffset;
-    }
 }
