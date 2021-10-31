@@ -50,15 +50,15 @@ public abstract class ImageSpan extends DynamicDrawableSpan implements Clickable
         if (bitmap != null) {
             width = bitmap.getWidth();
             height = bitmap.getHeight();
-            float maxWidth = view.getMeasuredWidth()
-                    - view.getPaddingLeft()
-                    - view.getPaddingRight();
-            //缩放至满宽度
-            float scale = maxWidth / width;
-            height = height * scale;
-            width = maxWidth;
-
-            offsetX = (maxWidth - width) / 2;
+//            float maxWidth = view.getMeasuredWidth()
+//                    - view.getPaddingLeft()
+//                    - view.getPaddingRight();
+//            //缩放至满宽度
+//            float scale = maxWidth / width;
+//            height = height * scale;
+//            width = maxWidth;
+//
+//            offsetX = (maxWidth - width) / 2;
             drawable.setBounds(0, 0, (int)width, (int)height);
         }
     }
